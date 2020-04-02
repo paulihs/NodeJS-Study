@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="outer">
+    <div id="inner">请点击</div>
+</div>
+<script>
+    const $outer = document.getElementById('outer');
+    const $inner = document.getElementById('inner');
+
+    new MutationObserver(() => {
+        console.log('mutate');
+    }).observe($inner, {
+        childList: true,
+    });
+
+    function onClick() {
+        console.log('click');
+        setTimeout(() => console.log('timeout'), 0);
+        Promise.resolve().then(() => console.log('promise'));
+        $inner.innerHTML = '已点击';
+    }
+
+    $inner.addEventListener('click', onClick);
+    $outer.addEventListener('click', onClick);
+    $inner.click();
+    console.log(12)
+</script>
+</body>
+</html>
