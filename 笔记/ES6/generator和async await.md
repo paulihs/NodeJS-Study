@@ -138,3 +138,5 @@ function *b(){
  }
 ```
 
+### async await
+
