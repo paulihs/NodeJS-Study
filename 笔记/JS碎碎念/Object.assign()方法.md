@@ -11,4 +11,5 @@ console.log(target);
 
 console.log(returnedTarget);
 // expected output: Object { a: 1, b: 4, c: 5 }
+console.log(target===returnedTarget)
 ```
