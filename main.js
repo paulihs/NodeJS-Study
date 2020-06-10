@@ -1,7 +1,6 @@
-var fs = require("fs");
 var buf = new Buffer(1024);
-
 console.log("准备打开文件！");
+
 fs.open('input.txt', 'r+', function(err, fd) {
     if (err) {
         return console.error(err);
@@ -28,3 +27,4 @@ fs.open('input.txt', 'r+', function(err, fd) {
         });
     });
 });
+var fs = require("fs");
