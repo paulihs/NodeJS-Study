@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>iframe</title>
+</head>
+<body>
+    <button onclick="lele()">我是Iframe</button>
+</body>
+<script>
+    window.addEventListener('message', function (e) {
+        console.log('iFrame____e_____', e);
+
+    });
+    function lele(){
+        console.log(window.parent)
+        window.parent.postMessage('我是iframe', '*')
+        // window.postMessage('我来自子iFrame', '*')
+    }
+</script>
+</html>

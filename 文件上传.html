@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="file" id="upload" multiple name="david" placeholder="选择" >
+<button onclick="uploadFile()">点我点我</button>
+<button onclick="exportFile()">输出文件</button>
+<img src="" alt="图片" id="img">
+</body>
+<script>
+
+    const uploadDOM = document.getElementById('upload');
+    const img = document.getElementById('img');
+    function uploadFile() {
+        console.log(14)
+        uploadDOM.click()
+    }
+    function exportFile() {
+        console.log(12)
+        let files0 = uploadDOM.files[0];
+        let read = new FileReader();
+        // 将file转换为各种类型数据的方法
+        //  https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader/readAsArrayBuffer
+        read.readAsDataURL(files0);
+        read.onload = function () {
+            console.log(`图片URL===`+this.result)
+        }
+        // http://www.fly63.com/article/detial/2070
+        // https://developer.mozilla.org/zh-CN/docs/Web/API/URL
+        // 将blob转化为url
+        let imgsrc = window.URL.createObjectURL(files0);
+        console.log('第二个URL==='+imgsrc);
+        img.src = imgsrc;
+    }
+
+</script>
+</html>
