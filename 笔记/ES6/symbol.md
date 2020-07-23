@@ -32,7 +32,7 @@ const sym = Symbol('foo');
 sym.description // 'foo'
 ```
 
-Symbol.for(), Symbol.keyFor()
+### `Symbol.for()`,`Symbol.keyFor()`
 
 Symbol.for()接受一个字符串作为参数，然后搜索有没有使用该参数作为名称Symbol值。如果有的话就返回这个symbol值。否则就新建一个以该字符串为名称的Symbol值，并将其全局注册。
 

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ES6模块</title>
+</head>
+<body>
+<script type="module">
+    console.log(typeof hello);
+    console.log( 'hello',hello);
+
+    import {hello ,logHello,ninja}  from './es6module.js';
+import * as ni from './es6module.js'
+//     console.log(typeof hello);
+//     hello.lele = 12;
+//     console.log(ni)
+//     console.log(typeof ni)
+//     console.log(hello.lele)
+//     console.log(hello)
+// // ninja.hll = 12
+//     logHello()
+</script>
+
+<script type="module">
+    import {hello} from './es6module.js';
+
+    // console.log(hello)
+    console.log('another==',hello.lele)
+</script>
+<script>
+</script>
+</body>
+</html>
