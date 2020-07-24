@@ -63,7 +63,7 @@ console.log(mod.counter);  // 3
 mod.incCounter();
 console.log(mod.counter); // 3
 
-说明输出的是值的拷贝
+// 说明输出的是值的拷贝
 ```
 
 

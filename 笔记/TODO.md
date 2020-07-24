@@ -11,7 +11,7 @@
 | 积累常用的函数方法如数组操作 字符串操作 json串的操作（JSON.stringify和parse） ，深拷贝，手写一些高级函数 |          |      |
 | cookie localstorage sessionstorage                           |          |      |
 | [跨域](./跨域.md)                                            |          |      |
-|                                                              |          |      |
+| 猴子都能知道的git                                            |          |      |
 |                                                              |          |      |
 |                                                              |          |      |
 |                                                              |          |      |
