@@ -22,6 +22,16 @@ CommonJS 的缺点在于这样的代码无法直接运行在浏览器环境下�
 >
 > 而当其他模块依赖该模块的时候，得到的是module.exports。所以不要在一个模块中同时使用这两个。
 
+```JavaScript
+module.exports = 100;
+console.log(exports); // {}
+// module.exports 不一定要是对象，可以是任意数据类型，但是模块输出的总是module.exports。
+```
+
+
+
+
+
 ES6 的Module特性让JS真正具备了模块的概念。而其实现和commonJS大有不同。先来看看
 
 ### 相同点：

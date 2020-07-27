@@ -12,7 +12,7 @@
 | cookie localstorage sessionstorage                           |          |      |
 | [跨域](./跨域.md)                                            |          |      |
 | 猴子都能知道的git                                            |          |      |
-|                                                              |          |      |
+| babel的使用                                                  |          |      |
 |                                                              |          |      |
 |                                                              |          |      |
 |                                                              |          |      |
