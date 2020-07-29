@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p id="example">
+    <a href="/name" title="name">name</a>
+    <a href="/age" title="age">age</a>?
+</p>
+<div class="main" id="main"  style="background: grey;width: 100px;height: 100px" ></div>
+<script>
+    ;(function(){
+        var examplebox = document.getElementById('example')
+        var mainbox = document.getElementById('main')
+
+        examplebox.addEventListener('click', function(e){
+            e.preventDefault()
+            var elm = e.target
+            var uri = elm.href
+            var tlt = elm.title
+            history.pushState({path:uri,title:tlt}, null, uri)
+            mainbox.innerHTML = 'current page is '+tlt
+        })
+        window.addEventListener('popstate',function(e){
+            var state = e.state;
+            console.log('popState          ', state);
+        })
+    })()
+</script>
+</body>
+</html>

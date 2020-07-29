@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div style="width: 100%;overflow-x: scroll">
+    <div style="display: flex;flex-wrap: wrap">
+        <div style="display: flex; flex-shrink: 0;;background: indianred;flex-wrap: nowrap">
+            <div style="min-width: 200px;height: 100px;">1</div>
+            <div style="width: 200px;height: 100px;">3</div>
+            <div style="width: 200px;height: 100px;flex-shrink: 0;">2</div>
+            <div style="width: 200px;height: 100px;flex-shrink: 0;">2</div>
+            <div style="width: 200px;height: 100px;flex-shrink: 0;">2</div>
+            <div style="width: 200px;height: 100px;flex-shrink: 0;">2</div>
+            <div style="width: 200px;height: 100px;flex-shrink: 0;">2</div>
+        </div>
+        <div style="display: flex;flex-shrink: 0;;background: indianred;flex-wrap: nowrap">
+            <div style="width: 200px;height: 100px;flex-shrink: 0;">1</div>
+            <div style="width: 200px;height: 100px;flex-shrink: 0;">3</div>
+            <div style="width: 200px;height: 100px;flex-shrink: 0;">2</div>
+            <div style="width: 200px;height: 100px;flex-shrink: 0;">2</div>
+        </div>
+<!--        <div style="flex-shrink: 0;;background: indianred">-->
+<!--            <div style="width: 100px;height: 100px;flex-shrink: 0;">1</div>-->
+<!--            <div style="width: 100px;height: 100px;flex-shrink: 0;">3</div>-->
+<!--            <div style="width: 100px;height: 100px;flex-shrink: 0;">2</div>-->
+<!--            <div style="width: 100px;height: 100px;flex-shrink: 0;">2</div>-->
+<!--        </div>-->
+    </div>
+
+</div>
+<script>
+    window.addEventListener('popstate', function(e){
+        console.log(e);
+    })
+
+//    通过直接设置location.hash的值，观察popstate触发的条件。只要
+</script>
+</body>
+</html>
