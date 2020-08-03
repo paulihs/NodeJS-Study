@@ -1,0 +1,35 @@
+<!--
+ * @Author: Jackie long
+ * @Date: 2020-07-30 17:28:34
+ * @LastEditTime: 2020-07-31 08:53:51
+ * @FilePath: \regTest\新建文件夹\断言加深印象.html
+ * @Description: Declare the module
+--> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!-- https://www.baidu.com/1.jpg 目标 ==>  https://oss.baidu.com/1.jpg   -->
+<body>
+    <main>
+        <a href="https://www.baidu.com/1.jpg">1.jpg</a>
+        <a href="https://sso.baidu.com/2.jpg">2.jpg</a>
+        <a href="https://baidu.com/3.jpg">3.jpg</a>
+        <a href="https://oss.baidu.com/4.jpg">4.jpg</a>
+      
+    </main>
+</body>
+
+<script>
+    let main  =document.querySelector('main');
+    const reg =/https:\/\/([a-z]+)?(?<!oss)\..+?(?=\/)/gi
+    main.innerHTML=main.innerHTML.replace(reg,v=>{
+        console.log(v);
+        return 'https://oss.baidu.com'
+    })
+</script>
+
+</html>

@@ -2,40 +2,142 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+<!--    <meta >-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        .line{
+            display: flex;
+            /*flex-wrap: nowrap;*/
+            /*width: 300px;*/
+            box-sizing: border-box;
+            /*padding-left: 100px;*/
+        }
+        /*.scroll {*/
+        /*    display: flex;*/
+        /*    flex-wrap: nowrap;*/
+        /*}*/
+        .item {
+            /*display: inline-block;*/
+            /*display: inline-block;*/
+            /*display: flex;*/
+            min-width: 100px;
+
+            height: 100px;
+            /*flex: 1;*/
+            flex-basis: 200px;
+            text-align: center;
+            font-size: 24px;
+        }
+        .red {
+            color: red;
+            background: red;
+        }
+        .green {
+            color: green;
+            background: green;
+
+        }
+        .gray {
+
+            background: grey;
+            color: grey;
+        }
+        .yellow {
+
+            background: yellow;
+            color: yellow;
+        }
+        .blue {
+
+            background: blue;
+            color: blue;
+        }
+        .pink {
+
+            background: pink;
+            color: pink;
+        }
+        .orange {
+
+            background: orange;
+            color: orange;
+        }
+        .fixed {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            background: #00B7FF;
+        }
+    </style>
 </head>
 <body>
-<div style="width: 100%;overflow-x: scroll">
-    <div style="display: flex;flex-wrap: wrap">
-        <div style="display: flex; flex-shrink: 0;;background: indianred;flex-wrap: nowrap">
-            <div style="min-width: 200px;height: 100px;">1</div>
-            <div style="width: 200px;height: 100px;">3</div>
-            <div style="width: 200px;height: 100px;flex-shrink: 0;">2</div>
-            <div style="width: 200px;height: 100px;flex-shrink: 0;">2</div>
-            <div style="width: 200px;height: 100px;flex-shrink: 0;">2</div>
-            <div style="width: 200px;height: 100px;flex-shrink: 0;">2</div>
-            <div style="width: 200px;height: 100px;flex-shrink: 0;">2</div>
-        </div>
-        <div style="display: flex;flex-shrink: 0;;background: indianred;flex-wrap: nowrap">
-            <div style="width: 200px;height: 100px;flex-shrink: 0;">1</div>
-            <div style="width: 200px;height: 100px;flex-shrink: 0;">3</div>
-            <div style="width: 200px;height: 100px;flex-shrink: 0;">2</div>
-            <div style="width: 200px;height: 100px;flex-shrink: 0;">2</div>
-        </div>
-<!--        <div style="flex-shrink: 0;;background: indianred">-->
-<!--            <div style="width: 100px;height: 100px;flex-shrink: 0;">1</div>-->
-<!--            <div style="width: 100px;height: 100px;flex-shrink: 0;">3</div>-->
-<!--            <div style="width: 100px;height: 100px;flex-shrink: 0;">2</div>-->
-<!--            <div style="width: 100px;height: 100px;flex-shrink: 0;">2</div>-->
+
+<!--<div class="container">-->
+<!--    <div class="wrap">-->
+<!--        <div class="scroll">-->
+<!--            <div class="line">-->
+<!--                <div class="item red ">1</div>-->
+<!--                <div class="item green">2</div>-->
+<!--                <div class="item gray">3</div>-->
+<!--                <div class="item pink">4</div>-->
+<!--                <div class="item orange">5</div>-->
+<!--                <div class="item yellow">6</div>-->
+<!--                <div class="item blue">7</div>-->
+<!--            </div>-->
+<!--            <div class="line">-->
+<!--                <div class="item red ">1</div>-->
+<!--                <div class="item green">2</div>-->
+<!--                <div class="item gray">3</div>-->
+<!--                <div class="item pink">4</div>-->
+<!--                <div class="item orange">5</div>-->
+<!--                <div class="item yellow">6</div>-->
+<!--                <div class="item blue">7</div>-->
+<!--            </div>-->
 <!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div style="width: 100%;">
+    <div class="line">
+        <div class="item red ">1</div>
+        <div class="item green">2</div>
+        <div class="item gray">3</div>
+        <div class="item pink">4</div>
+        <div class="item orange">5</div>
+        <div class="item yellow">6</div>
+        <div class="item blue">7</div>
     </div>
 
 </div>
+<!--<div class="line">-->
+<!--    <div class="item red ">1</div>-->
+<!--    <div class="item green">2</div>-->
+<!--    <div class="item gray">3</div>-->
+<!--    <div class="item pink">4</div>-->
+<!--    <div class="item orange">5</div>-->
+<!--    <div class="item yellow">6</div>-->
+<!--    <div class="item blue">7</div>-->
+<!--</div>-->
+<!--<div class="fixed"></div>-->
 <script>
     window.addEventListener('popstate', function(e){
         console.log(e);
     })
+    const linedom = document.getElementsByClassName('line')[0]
+    const bodyDom = document.getElementsByTagName('body')[0]
+// linedom.onscroll = function (e) {
+//     console.log('scroll------  ',e)
+//
+// }
+    window.onscroll = function (e) {
+        console.log('body scrollLeft------  ',document.documentElement.scrollLeft)
 
+    }
 //    通过直接设置location.hash的值，观察popstate触发的条件。只要
 </script>
 </body>

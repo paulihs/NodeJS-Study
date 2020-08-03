@@ -1,0 +1,60 @@
+<!--
+ * @Author: Jackie long
+ * @Date: 2020-07-27 16:56:47
+ * @LastEditTime: 2020-07-30 19:50:39
+ * @FilePath: \regTest\新建文件夹\字符的边界③.html
+ * @Description: Declare the module
+--> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <input type="text" name="user" style="width: 60vw;height: 20vh;">
+   <span></span>
+    <script>
+        
+        // 正则表达式是匹配模式，要么匹配字符，要么匹配位置
+        // 然大部分人学习正则时，对于匹配位置的重视程度没有那么高。
+        // let result = "hello".replace(/^|$/g, '#');
+        // console.log(result); 
+
+        // let exp ="123wasd";
+        // console.log(/d/.test(exp));
+        // console.log(/^\d$/.test(exp));
+
+
+        // 还是来个例子 加深一下 印象
+        // document.querySelector("[name='user']").addEventListener('keyup',function(){
+        // // wrong
+        // console.log(this.value.match(/[a-z]{3,6}/));
+        // // right
+        //  console.log(this.value.match(/^[a-z]{3,6}$/));
+        //  let flag = this.value.match(/^[a-z]{3,6}$/)
+        // document.querySelector('span').innerHTML= flag ? "正确" : "失败"
+        // })
+
+        // go on  \b  (boundary) \B = [^\b]
+        let str ='This is all I have.'
+        console.log(str.replace(/is/g,'#'));
+        console.log(str.replace(/(\bis\b)/g,'#'));
+        let randomData = "015 354 8787 687351 3512 8735";
+        let regexpFourDigits = /\b\d{4}\b/g;
+        console.table(randomData.match(regexpFourDigits));
+        //  \B  \B就是\b的反面的意思，非单词边界。例如在字符串中所有位置中，扣掉\b，剩下的都是\B的。
+        // https://regex101.com/r/DMx0dQ/2/
+        console.log(str.replace(/\Bis/g,'#'));
+        console.log(exp.replace(/\B/g,'#'));
+
+
+        // (?=p) (?!p) JavaScript语言的正则表达式，只支持先行断言（lookahead）和先行否定断言（negative lookahead）
+        // console.log(str.replace(/(?=T)/g,'#'));
+        // console.log(str.replace(/(?!T)/g,'#'));
+        
+    </script>
+    
+</body>
+</html>

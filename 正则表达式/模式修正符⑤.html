@@ -1,0 +1,53 @@
+<!--
+ * @Author: Jackie long
+ * @Date: 2020-07-27 16:57:25
+ * @LastEditTime: 2020-07-31 08:55:03
+ * @FilePath: \regTest\新建文件夹\模式修正符⑤.html
+ * @Description: Declare the module
+--> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <!-- i  g   m   u 改变其运行模式 -->
+    <script>
+        let eg ='juSt so so'
+        // g i   默认 区分大小写 非全局  
+        console.log(eg.match(/s/));
+        console.log(eg.match(/s/i));
+        console.log(eg.replace(/s/gi,"@"));
+
+
+        let goods =`
+         #1  oppo,2100元 #
+         #3  apple,500元 # 哈哈
+         #5  Mi,800元 #
+         #6  vivo,888元 #
+       `
+        //    m
+        // want ： [{name:'oppo',price:'2100元'}]
+        // wrong 
+
+        console.log(goods.match(/\s*#\d+\s+.+\s+#/g)[0]);
+        // right
+        console.log(goods.match(/^\s*#\d+\s+.+\s+#$/gm));
+        let newGoods =goods.match(/^\s*#\d+\s+.+\s+#$/gm).map(v=>{
+            console.log("v==>",v)
+         let newV= v.replace(/\s*#\d+\s*/,'').replace(/\s*#/,'');
+        //  解构 分配给变量
+          [name,price] = newV.split(',')
+          return {name,price};
+        })
+        console.log("newGoods==>",newGoods);
+
+
+
+    </script>
+    
+</body>
+</html>

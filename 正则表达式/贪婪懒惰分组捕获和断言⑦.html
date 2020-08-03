@@ -1,0 +1,104 @@
+<!--
+ * @Author: Jackie long
+ * @Date: 2020-07-29 17:24:16
+ * @LastEditTime: 2020-07-30 20:41:20
+ * @FilePath: \regTest\新建文件夹\贪婪懒惰分组捕获和断言⑦.html
+ * @Description: Declare the module
+--> 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>AI飘逸,AI真日天</div>
+    <script>
+
+// 量词        。掌握{m,n}的准确含义后，只需要记住一些简写形式。
+// {m,}        表示至少出现m次。
+// {m}         等价于{m,m}，表示出现m次。
+// ?           等价于{0,1}，表示出现或者不出现。记忆方式：问号的意思表示，有吗？
+// +           等价于{1,}，表示出现至少一次。记忆方式：加号是追加的意思，得先有一个，然后才考虑追加。
+// *           等价于{0,}，表示出现任意次，有可能不出现。记忆方式：看看天上的星星，可能一颗没有，可能零散有几颗，可能数也数不过来。
+        // 知识点 一 ：贪婪
+
+        let  eg ='12345678'
+        console.log(eg.replace(/\d{3,6}/g,'X'));
+
+        // 知识点 二 ：禁止贪婪是什么呢？
+        // console.log(eg.replace(/\d{3,6}?/g,'X'));
+        // let test ='yeeeeee'
+        // console.log(test.match(/ye+?/));
+        //  console.log(test.match(/ye*?/));
+
+        // 知识点 三 ：分组    apple{3}
+          // console.log( 'a1b2c3d4'.replace(/([a-z]\d){3}/,'x') );
+        // 知识点 四:  捕获 
+        // let  time ='2020/12/20';
+        // console.log(time.replace(/\//g,'-'));
+
+        // let  tel ="(010)6666666 (0200)88888888";
+        // 010-666666  https://regexper.com/
+        
+        // let reg =/\((\d{3,4})\)(\d{6,8})/g;
+        // console.log(tel.match(reg));
+        // console.log(tel.replace(reg,"$1-$2"));
+        //   $`  L   $' R    $&   
+        let test ='#Dva~';
+        
+        // console.log(test.replace(/Dva/,"$&"));
+        // console.log(test.replace(/Dva/,"$`"));
+        // console.log(test.replace(/Dva/,"$'"));
+
+        // let main =document.querySelector('body div');
+        // main.innerHTML=main.innerHTML.replace(/AI/g,
+        // `  <a href="https://baike.baidu.com/item/%E9%98%BF%E4%BC%A6%C2%B7%E8%89%BE%E5%BC%97%E6%A3%AE/386640?fr=aladdin">$&</a>`
+        // );
+        
+         //知识点 五： 断言
+
+        // 1. 要在AI后面跟上链接   ?=
+
+      // (?=真)条件  零宽先行断言  后面是什么 
+      
+        // let  reg=/AI(?=真)/g
+        //  let newMain=document.querySelector('body div');
+        //  newMain.innerHTML=newMain.innerHTML.replace(reg,
+        // `  <a href="https://baike.baidu.com/item/%E9%98%BF%E4%BC%A6%C2%B7%E8%89%BE%E5%BC%97%E6%A3%AE/386640?fr=aladdin">$&</a>`
+        // );
+
+
+  // 2. ?! 零宽负向先行断言  后面不是什么
+
+        let  test2 ='wasd2020dsad'
+        // let regs =/[a-z]+(?!\d+)/
+        let regs =/[a-z]+(?!\d+)$/
+       console.log(test2.match(regs));
+     
+  // 3. ?<=   零宽后行断言   前面是什么
+
+        // (?<=) 只是条件 不是组    
+
+        let users=`
+            张三:18202216155
+            李四:18202216155
+        `
+        // let reg =/(?<=\d{7})\d{4}/gi
+        // users= users.replace(reg,v=>{
+        //     console.log(v)
+        //     return '*'.repeat(4);
+        // });
+        // console.log(users)
+
+   // 4. ?<! 零宽负向后行断言   前面不是谁
+        let  test3 ='wasd2020dsad'
+        let regs3 =/(?<!\d+)[a-z]+/i
+        // regs3 =/(?<!\d+).+/i
+        console.log(test3.match(regs3));
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!--
+ * @Author: Jackie long
+ * @Date: 2020-07-27 16:56:36
+ * @LastEditTime: 2020-07-30 19:38:48
+ * @FilePath: \regTest\新建文件夹\正则的创建①.html
+ * @Description: Declare the module
+--> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 我们学习过  replace   substring substr slice  -->
+    <!-- 字符串对象共有4个方法，可以使用正则表达式：match()、replace()、search()和split() -->
+    <!-- 为了让大家 有一些兴趣，体会他的魅力 我们先举例子 -->
+
+    <div class="content">
+        Yeahzee123.com
+    </div>
+
+    <script>
+        
+         let reg='Jackie0707long1994'
+        //  console.log(Number.isNaN(parseInt('j')));
+        //  let nums=[...reg].filter(v=>
+        //     !Number.isNaN(parseInt(v))
+        //  );
+        //  console.log(nums.join(''));
+        // console.log(reg.match(/\d/g).join(''));
+
+        // 找邮箱  找网址 面对复杂的？   
+
+
+        // 一 ：easy 创建 的
+        // console.log(/J/.test(reg));
+        // case 1   不识别变量
+        // let t='J';
+        // // console.log(/t/.test(reg));
+        // 当然不是绝对的  比较麻烦一些  eval 把 字符串变为 JS表达式
+        // console.log(eval(`/${t}/`).test(reg));
+
+
+        // 二 ：使用对象
+        // let fruits='apple';
+        // let s='a' ;
+        // let b=/\w/ ;
+        // let reg2 =new RegExp(s,'g');
+        // console.log(reg2.test(fruits));
+
+
+        // 灵活运用一下  example
+        let con =prompt('请输入要检测的内容，支持正则');
+        // BAN //
+        let resg =new RegExp(con,'g');
+        let div =document.querySelector('div');
+        div.innerHTML=div.innerHTML.replace(resg,searched=>{
+            return `<span style='color:red'>${searched}</span>`
+        })
+
+    </script>
+   
+    
+</body>
+</html>

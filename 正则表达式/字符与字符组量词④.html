@@ -1,0 +1,117 @@
+<!--
+ * @Author: Jackie long
+ * @Date: 2020-07-27 16:57:00
+ * @LastEditTime: 2020-07-30 20:04:58
+ * @FilePath: \regTest\新建文件夹\字符与字符组量词④.html
+ * @Description: Declare the module
+--> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   
+    <script>
+       
+//   知识点一    
+
+//     特殊字符      正则表达式        记忆方式
+//     换行符         \n              new line
+//     换页符         \f              form feed
+//     回车符         \r              return
+//     空白符         \s              space
+//     制表符         \t              tab
+//     垂直制表符     \v              vertical tab 
+//     回退符         [\b]            backspace,之所以使用[]符号是避免和\b重复
+
+
+// 识点二
+
+// 单个字符的映射关系是一对一的，即正则表达式的被用来筛选匹配的字符只有一个。而这显然是不够的，只要引入集合区间和通配符的方式就可以实现一对多的匹配了。
+
+// 集合的定义方式是使用中括号[]来构建一个简单的类。
+// 如/[123]/这个正则就能同时匹配1,2,3三个字符。 暗含 或的关系
+// 那如果我想匹配所有的数字怎么办呢？从0写到9显然太过低效，
+// 所以元字符-就可以用来表示区间范围，利用/[0-9]/就能匹配所有的数字,/[a-z]/则可以匹配所有的英文小写字母
+// 比如[123456abcdefGHIJKLM]，可以写成[1-6a-fG-M]。用连字符-来省略和简写
+// "a"、"-"、"z"这三者中任意一个字符  [-az]或[az-]或[a\-z]
+
+// 特殊字符      正则表达式              记忆方式 (引进了 ^)
+
+// \d           [0-9]                   表示是一位数字。记忆方式：digit。
+// \D           [^0-9]                  表示除数字外的任意字符。
+// \w           [0-9a-zA-Z_]            表示数字、大小写字母和下划线_。word。
+// \W           [^0-9a-zA-Z_]。         非单词字符。
+// \s           [\t\v\n\r\f]。          表示空白符，包括空格、水平制表符、垂直制表符、换行符、回车符、换页符。
+// \S           [^\t\v\n\r\f]。         非空白符。
+// .            [^\n\r\u2028\u2029]     通配符，表示几乎任意字符。换行符、回车符、行分隔符和段分隔符除外。
+
+
+
+// 知识点   三  限定符   \d\d\d\d\d
+
+// 量词   也称重复。掌握{m,n}的准确含义后，只需要记住一些简写形式。
+// {m,}        表示至少出现m次。
+// {m}         等价于{m,m}，表示出现m次。
+// ?           等价于{0,1}，表示出现或者不出现。记忆方式：问号的意思表示，有吗？
+// +           等价于{1,}，表示出现至少一次。记忆方式：加号是追加的意思，得先有一个，然后才考虑追加。
+// *           等价于{0,}，表示出现任意次，有可能不出现。记忆方式：看看天上的星星，可能一颗没有，可能零散有几颗，可能数也数不过来。
+
+
+// /\d{2,}\D{2}\w?\W+\s*/
+// https://regexper.com/
+
+// 巩固
+
+let test =`
+    张三:010-666666,
+    李四:020-88888888
+`;
+
+// 只匹配  电话话  d
+// console.log(test.match(/\d{3}\-\d{6,8}/g))
+// // D  +
+// let   eg="long666"
+// console.log(eg.match(/\D+/))
+// // 只匹配  中文
+// console.log(test.match(/[-\d:\s,]/g))
+// console.log(test.match(/[^-\d:,]/g))
+// console.log(test.match(/[^-\d:,]+/g))
+
+//  \s  \S
+// console.log(/\s/.test('long'))
+// console.log(/\s/.test(' long'))
+// console.log(/\s/.test('\nlong'))
+// console.log(/\s/.test('\rlong'))
+// console.log(/\S/.test(''))
+// console.log(/\S/.test('\rlong'))
+// console.log(test.match(/[^-\d:,\s]+/g))
+
+//  \w  包含 \d 
+let example ='Yeahzee2020_@@'
+// console.log(example.match(/\w+/));
+let email='2020666@qq.com';
+// console.log(email.match(/\w+@\w+\.\w+/));
+// 不严谨  let  email ='&&&#￥2020666@qq.com'   邮箱限制
+console.log(email.match(/^\w+@\w+\.\w+$/));
+// \W  
+// console.log("long@".match(/\W/))
+
+
+// .  包含 \d  \w
+
+console.log(test.match(/.+/))
+
+
+// [\d\D]、[\w\W]、[\s\S]  可以匹配任意字符
+
+
+//  正则 是非常灵活的,多个原子的 组合结合我们后面 将要学的 修饰符   贪婪  断言可以写出你想要的的任意字符串匹配,
+</script>
+   
+    
+</body>
+</html>

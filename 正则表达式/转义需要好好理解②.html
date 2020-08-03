@@ -1,0 +1,44 @@
+<!--
+ * @Author: Jackie long
+ * @Date: 2020-07-27 16:56:42
+ * @LastEditTime: 2020-07-30 19:45:05
+ * @FilePath: \regTest\新建文件夹\转义需要好好理解②.html
+ * @Description: Declare the module
+--> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let price =666.66;
+        
+        let price2 ='66@66';
+        console.log(/\d+.\d+/.test(price2));
+        //  .  两个含义   1.出换行外任何字符  2.   .普通      
+        // d  \d  dight 0~9      
+        console.log(/\d+\.\d+/.test(price));
+        // 对象中  (false)
+        let reg =new RegExp('\d+\.\d+')
+        console.log(reg.test(price));
+        // why ?     
+        console.log("\d" == "d");
+        console.log("\d+\.\d+");
+
+        console.log("\d\+\\.\\d+");
+        
+        // 这里 我们讲的并不严谨  并未加 边界的限定
+        let price3 ='abc66.66';
+        console.log(/\d+\.\d+/.test(price3));
+
+        // 再来个例子    ? +  w  
+          
+        let url ='https://www.baidu.com/';
+        console.log(/https?:\/\/\w+\.\w+\./.test(url));
+
+    </script>
+</body>
+</html>

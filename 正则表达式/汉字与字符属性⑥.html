@@ -1,0 +1,106 @@
+<!--
+ * @Author: Jackie long
+ * @Date: 2020-07-27 16:56:51
+ * @LastEditTime: 2020-07-31 09:04:46
+ * @FilePath: \regTest\新建文件夹\汉字与字符属性⑥.html
+ * @Description: Declare the module
+--> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+
+    <script>
+ 
+    //  y修饰 之前 先说 lastIndex  控制搜索的位置
+    let example='Yeazee'
+    console.log(example.match(/\w/))
+    console.log(example.match(/\w/g))
+    // 属性丢失了
+    let reg =/\w/g;
+    console.log(reg.exec(example));
+    console.log(reg.exec(example));
+    console.log(reg.exec(example));
+    // ? 为什么呢 
+    console.log(reg.lastIndex);
+    console.log(reg.exec(example));
+    console.log(reg.lastIndex);
+    console.log(reg.exec(example));
+
+    // 那么 我们可以
+    while ((res=reg.exec(example))){
+        console.log(res)
+    }
+
+    // y叫做“粘连”（sticky）修饰符。  连续 满足条件
+    // let  eg ='ahaha'
+    // let newReg = /a/g;
+    // let newReg = /a/y;
+    // console.log(newReg.exec(eg));
+    // console.log(newReg.lastIndex);
+    // console.log(newReg.exec(eg));
+    // console.log(newReg.lastIndex);
+
+    //  作用 检索大文档 更高效
+    let newTest = `QQ号:11111,2222,3333,4444大声说`
+    let newRegx=/(\d+),?/y
+    newRegx.lastIndex=4;
+    // console.log(newRegx.exec(newTest));
+    // console.log(newRegx.exec(newTest));
+    // console.log(newRegx.exec(newTest));
+    // console.log(newRegx.exec(newTest));
+    // console.log(newRegx.exec(newTest));
+    let  QQList =[];
+     while ((v  = newRegx.exec(newTest))) QQList.push(v[1]);
+    console.log(QQList);
+
+
+
+    // ES6   u的 修饰符   
+    //  a   拥有[L]字符属性
+    let test ="正则表达式 .is, great!"  
+    //  \p{L} matches a single code point in the category "letter".
+    //  \p{N} matches any kind of numeric character in any script.
+    console.log(test.match(/\p{L}/gu));
+    console.log(test.match(/\p{P}/gu));
+    console.log(test.match(/\p{sc=Han}/gu));
+  
+    // Unicode 是为了解决传统的字符编码方案的局限而产生的，它为每种语言中的每个字符设定了统一并且唯一的二进制编码，
+    // 以满足跨语言、跨平台进行文本转换、处理的要求。Unicode 编码共有三种具体实现，分别为utf-8,utf-16,utf-32，其中utf-8占用一到四个字节，utf-16占用二或四个字节，utf-32占用四个字节
+    const moods = 'happy 🙂, confused 😕, sad 😢';
+    //  http://www.regular-expressions.info/unicode.html#prop
+    //  const regexpEmoticons = /[\u{1F600}-\u{1F64F}]/gu;
+    //  console.log(moods.match(regexpEmoticons));
+    // expected output: Array ['🙂', '😕', '😢']
+
+
+
+    // var nonEnglishText = "Приключения Алисы в Стране чудес";
+    // var regexpBMPWord = /([\u0000-\u0019\u0021-\uFFFF])+/gu;
+    // BMP goes through U+0000 to U+FFFF but space is U+0020
+
+    // console.table(nonEnglishText.match(regexpBMPWord));
+    // [ 'Приключения', 'Алисы', 'в', 'Стране', 'чудес' ]
+
+
+ 
+
+
+    
+let test2 =`
+    张三:010-666666,
+    李四:020-88888888
+`;
+
+    console.log(test2.match(/[^\-\d:,\s]+/g))
+    console.log(test2.match(/\p{sc=Han}+/gu));
+    
+    </script>
+    
+</body>
+</html>
