@@ -3,7 +3,7 @@
 | 分析叶子H5项目技术栈                                         |          | []() |
 | 深入 项目打包 webpack                                        |          |      |
 | redux                                                        |          |      |
-| react-router 前端路由的原理 history 哈希路由                 |          |      |
+| react-router 前端路由的原理 history 哈希路由                 | 完成     |      |
 | 理解thunk                                                    |          |      |
 | 深入generator                                                |          |      |
 | Co模块的解析                                                 |          |      |
