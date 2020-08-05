@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button onclick="log()">click me</button>
+<script>
+    const clientWidth = document.body.clientWidth;
+    const clientHeight = document.body.clientHeight;
+    function log(){
+        console.log('clientWidth ',clientWidth,'clientHeight ', clientHeight)
+    }
+    window.onresize = function () {
+        console.log('clientWidth ',clientWidth,'clientHeight ', clientHeight)
+
+    }
+    console.log(window.screen.height)     // 屏幕的竖向分辨率(高度)
+    console.log(window.screen.width)     // 屏幕的横向分辨率（宽度）
+</script>
+</body>
+</html>

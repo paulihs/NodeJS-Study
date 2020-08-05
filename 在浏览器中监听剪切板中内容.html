@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .nldj {
+            width: 200px;
+            height: 200px;
+            color: #00B7FF;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+<div class="nldj">难念的经</div>111😂( •̀ ω •́ )✧
+<button onclick="lele()">芜湖，起飞😂( •̀ ω •́ )✧</button>
+<script >
+   async function readClipboard() {
+        const result = await navigator.permissions.query({ name: "clipboard-read" })
+        return result.state === 'granted' || result.state === 'prompt';
+    }
+   async function logCopy(){
+        const text = await navigator.clipboard.readText();
+        console.log(text)
+    }
+    async function lele() {
+        await readClipboard()&& logCopy()
+    }
+</script>
+</body>
+</html>
