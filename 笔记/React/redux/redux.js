@@ -65,11 +65,16 @@ function createStore(reducer, preloadedState, enhancer) {
 
   // 闭包变量
 
+  // 当前的reducer
   var currentReducer = reducer;
+  // 当前状态
   var currentState = preloadedState;
+  // 当前订阅的回调
   var currentListeners = [];
+  // 下一轮的订阅的回调
   var nextListeners = currentListeners;
   //  自由变量
+  // 是否是dispatch状态
   var isDispatching = false;
 
   /**
@@ -94,7 +99,7 @@ function createStore(reducer, preloadedState, enhancer) {
    */
 
   /**
-   *  返回那个 currentState
+   *  返回那个 currentState，最新的那个状态
    * @returns {undefined}
    */
   function getState() {
@@ -107,7 +112,7 @@ function createStore(reducer, preloadedState, enhancer) {
 
 
   /**
-   *
+   *   添加新的订阅， 订阅就是在reducer处理完action之后，执行的回调函数队列
    * @param listener
    * @returns {unsubscribe}
    */
@@ -121,7 +126,9 @@ function createStore(reducer, preloadedState, enhancer) {
     }
 
     var isSubscribed = true;
+    // 切断nextListener和currentListener的联系
     ensureCanMutateNextListeners();
+    // 把新的订阅添加到下一次的订阅队列中
     nextListeners.push(listener);
     return function unsubscribe() {
       if (!isSubscribed) {
@@ -168,14 +175,15 @@ function createStore(reducer, preloadedState, enhancer) {
     } finally {
       isDispatching = false;
     }
-    // 将
+    // 将下一次的订阅队列赋值给当前订阅队列
     var listeners = currentListeners = nextListeners;
 
+    // 遍历队列，依次执行回调
     for (var i = 0; i < listeners.length; i++) {
       var listener = listeners[i];
       listener();
     }
-
+    // 将action抛出
     return action;
   }
 
@@ -190,12 +198,14 @@ function createStore(reducer, preloadedState, enhancer) {
    * @returns The same store instance with a new reducer in place.
    */
 
-
+  // 替换reducer， 将currentReducer替换为传入的值，再调用dispatch，使用新的reducer处理状态，同时再执行一下订阅队列
   function replaceReducer(nextReducer) {
     if (typeof nextReducer !== 'function') {
       throw new Error('Expected the nextReducer to be a function.');
-    } // TODO: do this more elegantly
-    currentReducer = nextReducer; // This action has a similar effect to ActionTypes.INIT.
+    }
+    // TODO: do this more elegantly
+    currentReducer = nextReducer;
+    // This action has a similar effect to ActionTypes.INIT.
     // Any reducers that existed in both the new and old rootReducer
     // will receive the previous state. This effectively populates
     // the new state tree with any relevant data from the old one.
@@ -347,6 +357,7 @@ function assertReducerShape(reducers) {
   });
 }
 
+//  接受一个对象作为参数，这个对象的key是model的名字，值是reducer（action处理函数）
 function combineReducers(reducers) {
   var reducerKeys = Object.keys(reducers);
   var finalReducers = {};
@@ -359,13 +370,14 @@ function combineReducers(reducers) {
         warning("No reducer provided for key \"" + key + "\"");
       }
     }
-
+    // 把值是函数的属性筛选出来
     if (typeof reducers[key] === 'function') {
       finalReducers[key] = reducers[key];
     }
   }
-
-  var finalReducerKeys = Object.keys(finalReducers); // This is used to make sure we don't warn about the same
+  // 最终合法的state名称（model） key 组成的数组
+  var finalReducerKeys = Object.keys(finalReducers);
+  // This is used to make sure we don't warn about the same
   // keys multiple times.
 
   var unexpectedKeyCache;
@@ -401,7 +413,9 @@ function combineReducers(reducers) {
 
     var hasChanged = false;
     var nextState = {};
-
+    // 当发起一个action的时候， redux会遍历每一个reducer，意味着每个reducer都要执行一次，
+    // 所以 reducer中 switch语句中的case值可以出现相同的情况。就是两个reducer可以有一样名字的case
+    //  还有就是在编写reducer时，一定要给state设置默认值，不然会报错。
     for (var _i = 0; _i < finalReducerKeys.length; _i++) {
       var _key = finalReducerKeys[_i];
       var reducer = finalReducers[_key];
@@ -418,6 +432,7 @@ function combineReducers(reducers) {
     }
 
     hasChanged = hasChanged || finalReducerKeys.length !== Object.keys(state).length;
+    // 返回新的state
     return hasChanged ? nextState : state;
   };
 }
@@ -477,6 +492,8 @@ function compose() {
   });
 }
 
+
+// 这个函数的参数是执行完dispatch之后，额外执行的函数
 function applyMiddleware() {
   // 将参数放入middleware中
   for (var _len = arguments.length, middlewares = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -484,8 +501,9 @@ function applyMiddleware() {
     middlewares[_key] = arguments[_key];
   }
 
-  // 返回的函数就是enhancer
+  // 返回的函数就是enhancer，所以接受createStore作为参数。与createStore内容相呼应
   return function (createStore) {
+    //  下面这个函数相当于 enhancer( createStore ) 返回的那个函数,他接受reducer和preloadState
     return function (reducer, preloadedState) {
       var store = createStore(reducer, preloadedState);
 
@@ -493,6 +511,7 @@ function applyMiddleware() {
         throw new Error('Dispatching while constructing your middleware is not allowed. ' + 'Other middleware would not be applied to this dispatch.');
       };
 
+      // 封装一下 getState和dispatch
       var middlewareAPI = {
         getState: store.getState,
         dispatch: function dispatch(action) {
@@ -503,14 +522,16 @@ function applyMiddleware() {
           return _dispatch.apply(void 0, [action].concat(args));
         }
       };
-      // chain是参数
+      // chain是一个数组，是一个将middlewareAPI 传给中间件之后的返回值的数组。
       var chain = middlewares.map(function (middleware) {
         return middleware(middlewareAPI);
       });
       _dispatch = compose.apply(void 0, chain)(store.dispatch);
-      return _objectSpread(_objectSpread({}, store), {}, {
-        dispatch: _dispatch
-      });
+
+      // _objectSpread ： 对象展开符，合并对象，相当于Object.assign。
+
+      //
+      return _objectSpread(_objectSpread({}, store), {}, {dispatch: _dispatch});
     };
   };
 }
