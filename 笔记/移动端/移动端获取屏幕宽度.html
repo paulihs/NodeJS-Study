@@ -16,6 +16,9 @@
         console.log('clientWidth ',clientWidth,'clientHeight ', clientHeight)
 
     }
+    window.addEventListener('orientationchange', function(){
+        alert(window.orientation)
+    })
     console.log(window.screen.height)     // 屏幕的竖向分辨率(高度)
     console.log(window.screen.width)     // 屏幕的横向分辨率（宽度）
 </script>

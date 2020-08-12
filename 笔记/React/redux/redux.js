@@ -265,7 +265,7 @@ function createStore(reducer, preloadedState, enhancer) {
   // When a store is created, an "INIT" action is dispatched so that every
   // reducer returns their initial state. This effectively populates
   // the initial state tree.
-  // 初始化state
+  // 初始化state，在reducer中不可能存在这样的type，所以返回每个model的默认值，初始化state
   dispatch({
     type: ActionTypes.INIT
   });
@@ -362,6 +362,7 @@ function combineReducers(reducers) {
   var reducerKeys = Object.keys(reducers);
   var finalReducers = {};
 
+  // 过滤出合法的reducer
   for (var i = 0; i < reducerKeys.length; i++) {
     var key = reducerKeys[i];
 
@@ -375,6 +376,8 @@ function combineReducers(reducers) {
       finalReducers[key] = reducers[key];
     }
   }
+
+
   // 最终合法的state名称（model） key 组成的数组
   var finalReducerKeys = Object.keys(finalReducers);
   // This is used to make sure we don't warn about the same
@@ -393,7 +396,7 @@ function combineReducers(reducers) {
   } catch (e) {
     shapeAssertionError = e;
   }
-
+  // 真正的reducer函数， 接受state和action 返回一个state
   return function combination(state, action) {
     if (state === void 0) {
       state = {};
@@ -432,7 +435,7 @@ function combineReducers(reducers) {
     }
 
     hasChanged = hasChanged || finalReducerKeys.length !== Object.keys(state).length;
-    // 返回新的state
+    // 返回新的state，返回的state和原来的state是不同的两个对象
     return hasChanged ? nextState : state;
   };
 }
@@ -530,7 +533,8 @@ function applyMiddleware() {
 
       // _objectSpread ： 对象展开符，合并对象，相当于Object.assign。
 
-      //
+      //  所以结果enhancer处理的createStore和没有enhancer的区别就是返回的store中的dispatch不一样
+      // 有enhancer处理过得store的dispatch方法，会在执行完基本的dispatch之后在额外执行 applyMiddleware传入的中间件函数
       return _objectSpread(_objectSpread({}, store), {}, {dispatch: _dispatch});
     };
   };
