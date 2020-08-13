@@ -11,7 +11,7 @@
 | [redux](./React/redux/redux.js)                              | 完成     | 0      |
 | react-redux                                                  |          | 0      |
 | react-router 前端路由的原理 history 哈希路由                 | 完成     | 0      |
-| typescript                                                   |          | 1      |
+| typescript学习                                               |          | 1      |
 | 理解thunk                                                    |          | 1      |
 | 深入generator                                                |          | 1      |
 | Co模块的解析                                                 |          | 1      |
@@ -30,7 +30,7 @@
 
 
 
-
+清理掘金收藏夹，学过的总结+删除，没学过的排期
 
 
 
