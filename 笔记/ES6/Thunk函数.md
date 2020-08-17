@@ -203,14 +203,124 @@ r1.value(function (err, data) {
 });
 ```
 
+那么仔细观察上面的回调函数，会发现Generator函数的执行过程就是将同一个回调函数反复传入next方法返回结果的value属性，这使得我们可以用递归的方式完成这个过程。
+
+#### Thunk函数的自动流程管理
+
+Thunk函数的作用在于可以作为yield表达式的值，用于自动执行Generator函数。
+
+> **原理**就是在yield后面是一个Thunk函数，异步操作就发生在这个Thunk内部，当异步操作结束时调用回调函数，在回调函数里面执行next方法，把执行权交还给Generator函数!
+
+```JavaScript
+function run(fn) {
+  var gen = fn();
+
+  function next(err, data) {
+    var result = gen.next(data);
+    if (result.done) return;
+    result.value(next);
+  }
+
+  next();
+}
+
+function* g() {
+  // ...
+}
+
+run(g);
+```
+
+这个run函数就是一个generator执行器。但是他有两个限制：
+
+1. run的参数必须是个Generator函数
+2. 在Generator函数中yield表达式后面跟的必须是个Thunk函数
+
+#### co模块
+
+co模块也是用于Generator函数的自动执行的。只要将Generator函数传入co函数，他就会自动执行，co函数会返回一个Promise对象，可以用then方法添加回调。
+
+那么为啥co可以自动执行Generator函数呢？其实原理是类似的。Generator函数是一个异步操作容器，他的自动执行需要一种机制，一种在异步操作有结果之后将控制权交还给Generator函数的机制。
+
+有两种方法可以做到：
+
+1. 回调函数。就像前面讲到的run函数一样。将异步操作包装成Thunk函数，在回调函数找那个交回执行权。
+2. Promise对象，将异步操作包装成Promise对象，用then方法交回执行权。
 
 
 
+co模块是两种方法的结合，使用co的前提是yield命令后面是Thunk函数或者Promise对象。
 
-那么我们需要在异步操作结束时，把执行权交还给Generator函数
+还是前面readFile的例子：
+
+```javascript
+var fs = require('fs');
+
+var readFile = function (fileName){
+  return new Promise(function (resolve, reject){
+    fs.readFile(fileName, function(error, data){
+      if (error) return reject(error);
+      resolve(data);
+    });
+  });
+};
+
+var gen = function* (){
+  var f1 = yield readFile('/etc/fstab');
+  var f2 = yield readFile('/etc/shells');
+  console.log(f1.toString());
+  console.log(f2.toString());
+};
+```
+
+然后手动执行：
+
+```javascript
+var g = gen();
+
+g.next().value.then(function(data){
+  g.next(data).value.then(function(data){
+    g.next(data);
+  });
+});
+```
 
 
 
-|      |      |
-| ---- | ---- |
-|      |      |
+那么基于Promise写出的自动执行器就是
+
+```javascript
+function run(gen){
+  var g = gen();
+
+  function next(data){
+    var result = g.next(data);
+    if (result.done) return result.value;
+    result.value.then(function(data){
+      next(data);
+    });
+  }
+
+  next();
+}
+
+run(gen);
+```
+
+可以和Thunk版本对比着来看：
+
+```JavaScript
+function run(fn) {
+  var gen = fn();
+
+  function next(err, data) {
+    var result = gen.next(data);
+    if (result.done) return;
+    result.value(next);
+  }
+
+  next();
+}
+```
+
+可以发现，两个版本唯一的区别就是 交还控制权方式的差别，上面的是通过Promise对象的then方法，而下面这个是通过Thunk函数的回调。

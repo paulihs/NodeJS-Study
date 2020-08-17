@@ -2,9 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>white-space属性设置浏览器如何处理元素内的空白</title>
+    <style>
+        p {
+            width: 200px;
+            background: #00B7FF;
+
+            white-space: normal;
+            /*white-space: normal;*/
+            word-break: break-word;
+            word-wrap: break-word;
+        }
+    </style>
 </head>
 <body>
-
+<p>
+    white-space有六个可能的值，分别是 <br>
+     normal：空白被浏览器忽略 <br>
+    pre： 空白被保留，其行为方式类似HTML中的 '\<\pre/\>'标签 <br>
+    nowrap: 文本不换行，直到遇到\<\br\>标签为止 <br>
+    pre-wrap: 保留空白符序列，但是正常的换行 <br>
+    pre-line： 合并空白符序列，但是保留换行符 <br>
+    inherit：从父元素继承white-space的值
+</p>
+<p>asjdflasdfasdfzasdfadfasdfadfasdfasdfasdfasdfasdfasfafasfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfaslkdfjasldfja;ldf;afdj</p>
 </body>
 </html>
