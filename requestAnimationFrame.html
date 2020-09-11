@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .box {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: red;
+            top: 100px;
+        }
+    </style>
+</head>
+<body>
+<div class="box"></div>
+<button onclick="moveBoxByTime()">按时间移动</button>
+<button onclick="moveBoxByLength()">按距离移动</button>
+<script>
+
+    /*
+    *  使用requestAnimationFrame 创建一个动画。有两个需要关注的点。
+    *  第一个点： requestAnimationFrame接受的参数是一个函数。这个函数会在下一次重绘之前执行，要想形成连贯动画，需要在参数函数中调用requestAnimationFrame。
+    *  第二个点： 在参数函数内部 有条件的调用requestAnimationFrame。 这个条件可以是自己设置的变量，比如长度 宽度等，也可以是想要动画执行的时间。在参数函数中，会接受一个时间戳，这个时间戳是
+    * 下次重绘的实际发生时间。     而mozAnimationStartTime保存的是上一次重绘的时间戳。 可以通过这两者的差值计算两次重绘的时间间隔。 当然也可以将某个时间点作为起点，通过设置时间长度来控制动画的执行时间
+    * （TODO 注意： 上面说的时间戳，各个浏览器实现方式有差异，Chrome和IE就没有提供这样的时间戳，所以我们也可以自己通过Date.now()的方式去创建一个时间戳）
+    *
+    * 还有一点要注意： 参数函数的执行时机是在下一次重绘之前，而具体什么时候重绘是浏览器决定的。而对于这个重绘是由什么原因导致的，我们也不需要关心，因为不管是别的原因触发，还是由于参数函数执行导致需要触发重绘
+    * 在下一次重绘的时候我们的动画效果都会发生（参数函数都会执行）。
+    * */
+    const element = document.getElementsByClassName('box')[0];
+
+    function moveBoxByLength() {
+
+        function move(timeStamp) {
+            // 通过实践表明，通过style.left获取元素的left值，也可以通过设置style.left改变元素的left值
+            // 但是 要注意，通过声明一个变量将 style.left缓存，然后过这个变量去获取设置left的值是行不通的。
+            let left = element.style.left;
+            if(!element.style.left){
+                element.style.left = '1px'
+            }else {
+                element.style.left= parseInt(left, 10)+10+'px'
+            }
+
+            console.log(element.style.left);
+
+            if (parseInt(element.style.left, 10) < 800) {
+                window.requestAnimationFrame(move);
+            }
+        }
+        window.requestAnimationFrame(move);
+
+
+
+
+    }
+
+
+    function moveBoxByTime() {
+        let start;
+
+        function step(timestamp) {
+            if (start === undefined){
+                 start = timestamp;
+            }
+            const elapsed = timestamp - start;
+
+            // `Math.min()` is used here to make sure that the element stops at exactly 200px.
+            element.style.transform = 'translateX(' + Math.min(0.1 * elapsed, 200) + 'px)';
+
+            if (elapsed < 2000) { // Stop the animation after 2 seconds
+                window.requestAnimationFrame(step);
+            }
+        }
+
+        window.requestAnimationFrame(step);
+    }
+</script>
+</body>
+</html>
