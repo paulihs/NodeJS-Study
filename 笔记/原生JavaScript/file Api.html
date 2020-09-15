@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>file API demo</title>
+</head>
+<body>
+<input type="file" id="filesList" multiple>
+<script>
+    const filesList = document.getElementById('filesList');
+    filesList.addEventListener('change',function (e) {
+        console.log('target', e.target);
+    //     e.target.files是一个数组，保存的是一组file对象的集合。一个file对象对应着一个文件，每个
+    //    文件都有以下只读属性：
+        //    name（文件名） size（大小） type （类型）lastModified（最后一次修改的时间）
+        const files = e.target.files;
+        console.log(e.target.files[0])
+//    fileReader类型 实现的是一种异步文件读取机制
+//     他有如下几个方法：
+//    readAsText(file, encoding) 以纯文本的形式读取文件，将读取到的文本保存在result属性中。第二个参数用于指定编码类型，是可选的。
+//    readAsDataUrl(file): 读取文件并将文件以数据URI的形式保存在result属性中
+//     readAsBinaryString(file): 读取文件并将一个字符串保存在result属性中，字符串中的每个字符表示一字节
+//     readAsArrayBuffer(file): 读取文件并将一个包含文件内容的ArrayBuffer保存在result属性中。
+//         由于这些读取的方法是异步的，所以fileReader提供了几个事件，通知用户读取的情况。
+//        这三个事件是progress、error、和load，分别表示是否读取了新数据， 是否发生了错误，以及是否已经读完整个文件。
+//        下面是使用fileReader的方法
+        const reader = new FileReader();
+        let type = '';
+        if(/image/.test(e.target.files[0].type)){
+            reader.readAsDataURL(files[0]);
+            type = 'image';
+        }else {
+            reader.readAsText(files[0]);
+            type = 'text';
+        }
+
+        reader.onload = function () {
+            switch (type) {
+                case 'image':
+                    console.log(reader.result);
+                    break;
+                case 'text':
+                    console.log(decodeURI(encodeURI(reader.result)) );
+                    break;
+                default:
+                    console.log('nothing')
+            }
+        }
+        // createObjectURL接受
+        const objurl = window.URL.createObjectURL(files[0]);
+        // 此处的objurl就是文件在系统中的路径
+        console.log('objurl', objurl );
+
+    })
+//     根据上述代码表明，readAsDataURL是将读取的图片转换成base64格式的数据
+
+// 对象URL  也被称为blob URL，指的是引用保存咋File或者Blob中数据的URL。
+
+</script>
+
+
+<script>
+
+</script>
+</body>
+</html>

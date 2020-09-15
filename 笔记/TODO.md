@@ -30,7 +30,7 @@
 | JS bridge 的实现方式                                         |          |        |
 | node.js express Koa                                          |          | ☆☆☆☆☆  |
 | serviceWorker                                                |          |        |
-| web worker                                                   |          |        |
+| web worker                                                   | 完成     |        |
 | pwa                                                          |          |        |
 |                                                              |          |        |
 
