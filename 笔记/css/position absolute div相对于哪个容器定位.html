@@ -4,18 +4,24 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
+        body {
+            margin: 50px 0 0 50px;
+            height: 1000px;
+        }
         .box {
             position: absolute;
             top: 0;
+            left: 0;
             width: 200px;
-            height: 200px;
+            /*height: 200px;*/
+            background: red;
         }
     </style>
 </head>
 <body>
     <div class="box">
         我们发现默认的body是有margin的，所以box这个盒子不会贴在左边，当我们设置box的样式 left：0；时发现，box已经贴在屏幕的左边了。这个说明
-        当绝对定位的盒子没有定位属性为relative的父容器时，它是以html标签作为父容器进行定位的，这和我们以前认为的以body为父容器进行定位的想法是不同的
+        当绝对定位的盒子没有定位属性为relative,absolute,fixed的父容器时，它是以html标签作为父容器进行定位的，这和我们以前认为的以body为父容器进行定位的想法是不同的
     </div>
 </body>
 </html>

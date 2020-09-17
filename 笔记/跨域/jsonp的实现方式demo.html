@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jsonp的实现方式</title>
+</head>
+<body>
+<button onclick="downloadScript()">下载script</button>
+<script>
+    function downloadScript() {
+        const scriptTag = document.createElement('script');
+        scriptTag.src = 'https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/js/lib/jquery-1-edb203c114.10.2.js';
+        // 注意设置完script标签的src，并不会发起请求，必须等到将script标签放入DOM中才会发起下载目标资源的请求。
+        document.body.appendChild(scriptTag)
+    }
+</script>
+
+
+<script>
+<!---->
+//    jsonp由两个部分组成： 回调函数和数据
+//     第一步创建一个script标签
+    const jsonpTag = document.createElement('script');
+//     第二步 设置标签的src
+    const name = 'david';
+    jsonpTag.src = `http://freegeoip.net/json/?callback=handleResponse&name=${name}`;
+//    注意请求的发起是从将 jsonpTag放入dom开始的
+//     在这个地址中，我们需要传入一个回调函数的名字,还有一些查询接口需要的参数。 callback就是回调函数的名字，name就是查询的参数，当然还可以添加其他的参数
+//     这个回调函数，我们需要先声明好，在下载的这个script中，回去调用这个函数，而这个函数的参数就是请求返回的响应
+    document.body.appendChild(jsonpTag);
+
+
+//     在下载的这个script标签的代码中，他的内容应该是        handleResponse(...响应数据)
+//     我们在声明这个handleResponse函数的时候，为了保证他是全局的函数，可以将其作为window对象的属性声明。
+</script>
+</body>
+</html>
