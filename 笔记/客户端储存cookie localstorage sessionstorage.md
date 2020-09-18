@@ -1,3 +1,15 @@
+### Cookie
+
+HTTP Cookie，通常称为cookie。最开始是用于在客户端储存信息的。浏览器的
+
+cookie长度最多为4k。
+
+
+
+
+
+、
+
 sessionStorage和localStorage都是用来储存信息在浏览器中的
 
 localStorage和sessionStorage是存在浏览器
