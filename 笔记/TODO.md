@@ -32,7 +32,7 @@
 | serviceWorker                                                |          |        |
 | web worker                                                   | 完成     |        |
 | pwa                                                          |          |        |
-|                                                              |          |        |
+| 浏览器缓存                                                   |          |        |
 
 
 
