@@ -15,7 +15,7 @@ cookie是一组一组的键值对，通过=连接。 name=value   name就是名�
 
 cookie的属性：
 
-一组键值还有一些属性修饰。不如：
+一组键值还有一些属性修饰。比如：
 
 域：cookie对那个域有效，向这个域发送请求时会包含这个cookie信息。可以通过domain=www.baidu.com来设置。如果没有明确指定的话，那么会默认来自设置cookie的那个域。
 
@@ -42,7 +42,7 @@ localStorage和sessionStorage是存在浏览器
 
 localStorage生命周期是永久，这意味着除非用户显示在浏览器提供的api上清除localStorage信息或者清除了浏览器缓存，否则这些信息将永远存在。存放数据大小为一般为5MB,而且它仅在客户端（即浏览器）中保存，不参与和服务器的通信。
 
-sessionStorage仅在当前会话下有效，关闭页面或浏览器后被清除。存放数据大小为一般为5MB,而且它仅在客户端（即浏览器）中保存，不参与和服务器的通信。源生接口可以接受，亦可再次封装来对Object和Array有更好的支持。
+sessionStorage仅在当前会话下有效，关闭页面或浏览器后被清除。存放数据大小为一般为5MB,而且它仅在客户端（即浏览器）中保存，不参与和服务器的通信。**他的特点是即便是相同域名下的两个页面，只要它们不在同一个浏览器窗口中打开，那么它们的 sessionStorage 内容便无法共享**；
 
 localstorage和sessionStorage都只能在同源的页面访问，修改，都不支持跨域。
 
@@ -55,5 +55,7 @@ localstorage和sessionStorage都只能在同源的页面访问，修改，都不
 3. 调用storage对象的clear方法
 
 indexDB也是只能在同源的页面访问，设置。
+
+https://github.com/ljianshu/Blog/issues/25
 
 https://juejin.im/post/6844903516826255373
