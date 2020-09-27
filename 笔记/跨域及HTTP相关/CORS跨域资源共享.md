@@ -1,4 +1,4 @@
-CORS(Cross-Origin Resource Sharing， 跨域资源共享)
+#### CORS(Cross-Origin Resource Sharing， 跨域资源共享)
 
 CORS定义了在访问跨域资源的时候，浏览器和服务器之间应该如何沟通。
 
