@@ -29,7 +29,7 @@
 | 什么是hybrid开发                                             |          |                     |
 | JS bridge 的实现方式                                         |          |                     |
 | node.js      express       Koa                               |          |                     |
-|                                                              |          |                     |
+| 什么是BFC                                                    |          |                     |
 | web worker                                                   | 完成     |                     |
 | pwa                                                          |          |                     |
 | 浏览器缓存 serviceWorker                                     |          |                     |
