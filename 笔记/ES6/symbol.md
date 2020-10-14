@@ -9,7 +9,7 @@ a === b; // false
 typeof a ;// 'symbol'
 ```
 
-注意调用symbol函数不需要使用new操作符，也不能使用，用了会报错。
+##### 注意调用symbol函数不需要使用new操作符，也不能使用，用了会报错。
 
 现在对象的属性名有多了一种类型symbol类型。在此之前，对象的属性名只能是字符串。
 
@@ -34,7 +34,9 @@ sym.description // 'foo'
 
 ### `Symbol.for()`,`Symbol.keyFor()`
 
-Symbol.for()接受一个字符串作为参数，然后搜索有没有使用该参数作为名称Symbol值。如果有的话就返回这个symbol值。否则就新建一个以该字符串为名称的Symbol值，并将其全局注册。
+Symbol.for()接受一个字符串作为参数，然后搜索有没有使用该参数作为名称Symbol值。如果有的话就返回这个symbol值。否则就新建一个以该字符串为名称的Symbol值，并将其**全局注册**。
+
+通过Symbol.for()方法创建的symbol符号是全局符号注册表中的一员，或者说通过Symbol.for()创建的symbol符号是全局符号。
 
 ```javascript
 let s0 = Symbol('foo');
@@ -45,9 +47,11 @@ s1 === s2 // true
 
 ```
 
-上面代码中s0是Symbol直接生成的，他不会注册到全局中，s1是通过Symbol.for()创建的，并且s1会被登记在全局环境中供搜索。所以s0和s1是不同的，而s1和s2是同一个symbol。
 
-Symbol.for()的这个全局登记特性，可以用在不同的iframe或者service worker中取到同一个值。
+
+即使采用相同的符号描述，在全局注册表中定义的符合和使用Symbol()定义的符号也并不相同。上面代码中s0是Symbol直接生成的，他不会注册到全局中，s1是通过Symbol.for()创建的，并且s1会被登记在全局环境中供搜索。所以s0和s1是不同的，而s1和s2是同一个symbol。
+
+Symbol.for()的这个全局登记特性，可以用在**不同的iframe**或者service worker中取到同一个值。
 
 ```javascript
 const iframe = document.createElement('iframe');
@@ -58,6 +62,8 @@ iframe.contentWindow.Symbol.for('foo') === Symbol.for('foo')
 ```
 
 Symbol.keyFor()方法返回一个已登记的Symbol类型值的key。
+
+这个已登记的符号就是全局符号，如果查询的不是全局符号，就会返回undefined。
 
 ```javascript
 let s1 = Symbol.for("foo");
