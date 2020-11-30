@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas 画布</title>
+</head>
+<body>
+<canvas id="drawing" width="200" height="200">
+    画点东西
+</canvas>
+<script>
+    const drawing = document.getElementById('drawing');
+    if(drawing.getContext){
+        const context = drawing.getContext('2d');
+
+        //填充
+        context.fillStyle = '#0000ff';
+        context.fillRect(10, 10, 50, 50);
+        // context.fillStyle = 'rgba(0, 0, 255, 0.5)';
+        context.fillStyle = 'red';
+        context.fillRect(30, 30, 50, 50);
+
+        // 描边
+        context.strokeStyle = 'red';
+        context.strokeRect(10, 10, 50, 50);
+        context.strokeStyle = "rgba(0,0,255,0.5)";
+        context.strokeRect(30, 30, 50, 50);
+
+    }
+</script>
+</body>
+</html>

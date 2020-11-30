@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>拖放事件，有些发生在被拖放元素上，有些发生在放置目标上</title>
+    <style>
+        #dropTarget {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: pink;
+        }
+        img {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+
+
+
+
+
+sdfadfadfadfaldfasdfadfadfafa
+    <img id="dragObj" src="../images/dva.jpg" alt="dva">
+    <div id="dropTarget">
+
+    </div>
+</body>
+<script>
+    const dragObj = document.getElementById('dragObj');
+    // 在dragstart事件 中设置被拖动对象允许的dropEffect
+    dragObj.addEventListener('dragstart',(e)=>{
+        console.log('触发dragstart 事件！')
+        e.dataTransfer.effectAllowed = 'all'
+
+        console.log(e.dataTransfer)
+    });
+
+    // dragObj.addEventListener('drag',()=>{
+    //     console.log('触发drag 事件！')
+    // });
+
+    dragObj.addEventListener('dragend',()=>{
+        console.log('触发dragend 事件！')
+    });
+
+    const dropTarget = document.getElementById('dropTarget');
+
+    // 在放置目标上的 dragenter事件中设置dropEffect,告诉浏览器 放置目标允许那种放置行为。
+    dropTarget.addEventListener('dragenter', (e)=>{
+       console.log('触发dragenter事件')
+        e.preventDefault();
+        let dataTransfer = e.dataTransfer;
+       e.dataTransfer.dropEffect = 'move';
+
+       // const {items, types, files} = dataTransfer;
+       //  console.log(items, types, files)
+       //  console.log(dataTransfer.getData('text/plain'))
+    });
+
+    dropTarget.addEventListener('dragover', (e)=>{
+        // console.log('触发dragover事件')
+        e.preventDefault();
+    });
+
+    // dropTarget.addEventListener('dragleave', ()=>{
+    //     console.log('触发dragleave事件')
+    // });
+    //
+    dropTarget.addEventListener('drop', (e)=>{
+        console.log('触发drop事件')
+        e.preventDefault();
+        console.log(e.dataTransfer.getData('text'))
+        console.log(e.dataTransfer.getData('url'))
+
+    });
+</script>
+</html>
