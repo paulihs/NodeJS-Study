@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>通知权限 Notifications</title>
+</head>
+<body>
+<button onclick="sendNote()">大碗宽面</button>
+<script>
+    Notification.requestPermission().then(per=>{
+        console.log('是否同意显示通知',per);
+    });
+    function sendNote() {
+        new Notification('无敌!', {
+            body: 'Body text!',
+            image: './笔记/images/麦爹.jpg',
+            vibrate: true
+        });
+    }
+</script>
+</body>
+</html>
