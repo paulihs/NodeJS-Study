@@ -1,4 +1,11 @@
+
+
+
+
+
+
 # Hook概览
+
 Hook是React 16.8的新特性，他可以让你在不便携class的情况下使用**state**，以及其他React特性。
 
 ## 1. useState
@@ -21,7 +28,7 @@ function Example(){
         </div>
     );
 }
-``` 
+```
 
 上面这段代码调用`useState`创建一个叫`count`的state，以及一个改变`count`的方法`setCount`。`useState`接受0为参数，作为`count`的初始值。当点击按钮时，触发`setCount`，改变`count`的值，react会重新渲染組件`Example`。
 **注意：setCount类似于class组件的`this.setState`,但是他不会将新的state和旧的state合并。**
@@ -123,3 +130,12 @@ const value = useContext(Mycontext);
 ```
 接受一个context对象（React.createContext的返回值）并返回该context的当前值。当前的context值由上层组件中距离当前组件最近的MyContext.Provider的value属性决定。
 当组件上层最近的MyContext.Provider更新时，该Hook会触发重新渲染。并使用最新传递给MyContext的Provider的value值。即使祖先使用了react.memo或者shouldComponentUpdate，也会在组件本身使用useContext时重新渲染
+
+
+
+
+
+
+
+
+

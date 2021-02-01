@@ -338,6 +338,7 @@ function getUnexpectedStateShapeWarningMessage(inputState, reducers, action, une
   }
 }
 
+// 校验 reducer的 defaultState是否合法，在初始化或者收到未知的actionType的时候都不能返回undefined
 function assertReducerShape(reducers) {
   Object.keys(reducers).forEach(function (key) {
     var reducer = reducers[key];
@@ -362,7 +363,7 @@ function combineReducers(reducers) {
   var reducerKeys = Object.keys(reducers);
   var finalReducers = {};
 
-  // 过滤出合法的reducer
+  // 过滤出合法的reducer, reducer必须是function
   for (var i = 0; i < reducerKeys.length; i++) {
     var key = reducerKeys[i];
 
@@ -397,7 +398,10 @@ function combineReducers(reducers) {
     shapeAssertionError = e;
   }
   // 真正的reducer函数， 接受state和action 返回一个state
+  // 在程序运行时，这个state实际上就是那个currentState
+  //
   return function combination(state, action) {
+    // 防止没有初始状态，设state为空对象。
     if (state === void 0) {
       state = {};
     }
@@ -413,16 +417,20 @@ function combineReducers(reducers) {
         warning(warningMessage);
       }
     }
-
+    // Flag标志位  用于判断state是否改变
     var hasChanged = false;
     var nextState = {};
     // 当发起一个action的时候， redux会遍历每一个reducer，意味着每个reducer都要执行一次，
     // 所以 reducer中 switch语句中的case值可以出现相同的情况。就是两个reducer可以有一样名字的case
     //  还有就是在编写reducer时，一定要给state设置默认值，不然会报错。
     for (var _i = 0; _i < finalReducerKeys.length; _i++) {
+      // key值
       var _key = finalReducerKeys[_i];
+      // key对应的reducer
       var reducer = finalReducers[_key];
+      // 处理之前key对应的state'
       var previousStateForKey = state[_key];
+      // 处理之后key对应的state
       var nextStateForKey = reducer(previousStateForKey, action);
 
       if (typeof nextStateForKey === 'undefined') {
@@ -431,6 +439,7 @@ function combineReducers(reducers) {
       }
 
       nextState[_key] = nextStateForKey;
+      //  判断状态是否变化由Flag或者 前后两次的state是否相等判断
       hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
     }
 

@@ -15,12 +15,25 @@ JSX会被编译为React.createElement()，React.createElement()会返回被称�
 
 Babel 是一个工具链，主要用于将 ECMAScript 2015+ 版本的代码转换为向后兼容的 JavaScript 语法，以便能够运行在当前和旧版本的浏览器或其他环境中。
 
+#### ES6：
+
 ```JavaScript
 var name = "Guy Fieri";
 
 var place = "Flavortown";
 
 `Hello ${name}, ready for ${place}?`;
+
+```
+
+#### ES5：
+
+```JavaScript
+var name = "Guy Fieri";
+
+var place = "Flavortown";
+
+"Hello ".concat(name, ", ready for ").concat(place, "?");
 
 ```
 
@@ -41,10 +54,13 @@ const ele = (
 
 ```javascript
 const ele = React.createElement(
+// node type    
 'h1',
+// props    
  {
      className: 'greeting'
  },
+    // children
  'hello, world!'   
 );
 ```
@@ -86,7 +102,9 @@ const ele = React.createElement(
 );
 ```
 
-正亦如此，我们在写JSX的时候，必须要引入react。
+正因如此，**我们在写JSX的时候，必须要引入react**。
+
+像ele这样通过React.createElement()创建的对象，我们称之为 **React元素**
 
 那么我们来看看React.createElement()做了哪些事情？
 
@@ -96,6 +114,12 @@ const ele = React.createElement(
  React的创建元素方法
 
  */
+
+/**
+ type： 节点类型。可以是像‘h1’ ‘div’ 这样的HTML标签字符串，也可以是React组件类型或者React fragment类型
+ config： props对象
+ children： 子节点
+*/
 
 export function createElement(type, config, children) {
 
@@ -241,9 +265,38 @@ React.createElement接受三个参数，标签名，属性对象，子节点。
 
 如果有多个子元素，会将子元素依次加在第三个参数后面。
 
+ReactElement做的工作就是处理jsx包含的信息，梳理完之后传给ReactElement 创建 react元素（对象）
+
 createElement()执行到最后会return一个针对ReactElement的调用。
 
 ```javascript
+const ReactElement = function(type, key, ref, self, source, owner, props) {
+
+  const element = {
+
+    // REACT_ELEMENT_TYPE是一个常量，用来标识该对象是一个ReactElement
+
+    $$typeof: REACT_ELEMENT_TYPE,
+
+    // 内置属性赋值
+
+    type: type,
+
+    key: key,
+
+    ref: ref,
+
+    props: props,
+
+    // 记录创造该元素的组件
+    _owner: owner,
+  };
+  // 
+  if (__DEV__) {
+    // 这里是一些针对 __DEV__ 环境下的处理，对于大家理解主要逻辑意义不大，此处我直接省略掉，以免混淆视听
+  }
+  return element;
+};
 
 ```
 
@@ -282,4 +335,10 @@ ReactDom.render(ele, document.getElementById('app'));
 ```
 
 我们要知道其实传递给render函数的就是这个ele对象，然后通过这个render方法在id为app的根节点里面生成基于ele对象的DOM树。
+
+
+
+ReactElement对象的本质 是 **以JavaScript对象形式存在的 对DOM的描述**，也就是我们常说的 “虚拟DOM”，或者说是虚拟DOM中的一个节点。
+
+而虚拟DOM变成页面上的真实DOM的这个工作是由 **ReactDOM.render**来完成的。
 

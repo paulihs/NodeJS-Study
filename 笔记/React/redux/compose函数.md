@@ -1,244 +1,5 @@
 ### createStore
 
-```javascript
-
-function createStore(reducer, preloadedState, enhancer) {
-  var _store;
-
-  if (typeof preloadedState === 'function' && typeof enhancer === 'function' || typeof enhancer === 'function' && typeof arguments[3] === 'function') {
-    throw new Error('It looks like you are passing several store enhancers to ' + 'createStore(). This is not supported. Instead, compose them ' + 'together to a single function.');
-  }
-
-  if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
-    enhancer = preloadedState;
-    preloadedState = undefined;
-  }
-
-  // 存在enhancer的话，就返回enhancer(createStore)(reducer, preloadedState)
-  if (typeof enhancer !== 'undefined') {
-    if (typeof enhancer !== 'function') {
-      throw new Error('Expected the enhancer to be a function.');
-    }
-
-    return enhancer(createStore)(reducer, preloadedState);
-  }
-
-  // reducer不是函数就报错
-  if (typeof reducer !== 'function') {
-    throw new Error('Expected the reducer to be a function.');
-  }
-
-  // 闭包变量
-
-  var currentReducer = reducer;
-  var currentState = preloadedState;
-  var currentListeners = [];
-  var nextListeners = currentListeners;
-  //  自由变量
-  var isDispatching = false;
-
-  /**
-   * shallow 浅的，肤浅的。
-   * This makes a shallow copy of currentListeners so we can use
-   * nextListeners as a temporary list while dispatching.
-   *
-   * This prevents any bugs around consumers calling
-   * subscribe/unsubscribe in the middle of a dispatch.
-   */
-
-  function ensureCanMutateNextListeners() {
-    if (nextListeners === currentListeners) {
-      nextListeners = currentListeners.slice();
-    }
-  }
-
-  /**
-   * Reads the state tree managed by the store.
-   *
-   * @returns The current state tree of your application.
-   */
-
-  /**
-   *  返回那个 currentState
-   * @returns {undefined}
-   */
-  function getState() {
-    if (isDispatching) {
-      throw new Error('You may not call store.getState() while the reducer is executing. ' + 'The reducer has already received the state as an argument. ' + 'Pass it down from the top reducer instead of reading it from the store.');
-    }
-
-    return currentState;
-  }
-
-
-
-  /**
-   *
-   * @param listener
-   * @returns {unsubscribe}
-   */
-  function subscribe(listener) {
-    if (typeof listener !== 'function') {
-      throw new Error('Expected the listener to be a function.');
-    }
-
-    if (isDispatching) {
-      throw new Error('You may not call store.subscribe() while the reducer is executing. ' + 'If you would like to be notified after the store has been updated, subscribe from a ' + 'component and invoke store.getState() in the callback to access the latest state. ' + 'See https://redux.js.org/api/store#subscribelistener for more details.');
-    }
-
-    var isSubscribed = true;
-    ensureCanMutateNextListeners();
-    nextListeners.push(listener);
-    return function unsubscribe() {
-      if (!isSubscribed) {
-        return;
-      }
-
-      if (isDispatching) {
-        throw new Error('You may not unsubscribe from a store listener while the reducer is executing. ' + 'See https://redux.js.org/api/store#subscribelistener for more details.');
-      }
-
-      isSubscribed = false;
-      ensureCanMutateNextListeners();
-      var index = nextListeners.indexOf(listener);
-      nextListeners.splice(index, 1);
-      currentListeners = null;
-    };
-  }
-
-
-
-  /**
-   *    先用当前reducer（为什么要说是当前的reducer，因为reducer是可以替换的）处理action，获得新的state
-   *    依次执行listeners
-   *    把action抛出去
-   * @param action
-   * @returns {*}
-   */
-  function dispatch(action) {
-    // action必须是简单对象
-    if (!isPlainObject(action)) {
-      throw new Error('Actions must be plain objects. ' + 'Use custom middleware for async actions.');
-    }
-    //  action必须有type属性
-    if (typeof action.type === 'undefined') {
-      throw new Error('Actions may not have an undefined "type" property. ' + 'Have you misspelled a constant?');
-    }
-    //
-    if (isDispatching) {
-      throw new Error('Reducers may not dispatch actions.');
-    }
-
-    try {
-      isDispatching = true;
-      currentState = currentReducer(currentState, action);
-    } finally {
-      isDispatching = false;
-    }
-    // 将
-    var listeners = currentListeners = nextListeners;
-
-    for (var i = 0; i < listeners.length; i++) {
-      var listener = listeners[i];
-      listener();
-    }
-
-    return action;
-  }
-
-
-
-
-  function replaceReducer(nextReducer) {
-    if (typeof nextReducer !== 'function') {
-      throw new Error('Expected the nextReducer to be a function.');
-    } // TODO: do this more elegantly
-    currentReducer = nextReducer; // This action has a similar effect to ActionTypes.INIT.
-    // Any reducers that existed in both the new and old rootReducer
-    // will receive the previous state. This effectively populates
-    // the new state tree with any relevant data from the old one.
-
-    dispatch({
-      type: ActionTypes.REPLACE
-    }); // change the type of the store by casting it to the new store
-
-    return store;
-  }
-
-  /**
-   * Interoperability point for observable/reactive libraries.
-   * @returns A minimal observable of state changes.
-   * For more information, see the observable proposal:
-   * https://github.com/tc39/proposal-observable
-   */
-
-
-  function observable() {
-    var _ref;
-
-    var outerSubscribe = subscribe;
-    return _ref = {
-      /**
-       * The minimal observable subscription method.
-       * @param observer Any object that can be used as an observer.
-       * The observer object should have a `next` method.
-       * @returns An object with an `unsubscribe` method that can
-       * be used to unsubscribe the observable from the store, and prevent further
-       * emission of values from the observable.
-       */
-      subscribe: function subscribe(observer) {
-        if (typeof observer !== 'object' || observer === null) {
-          throw new TypeError('Expected the observer to be an object.');
-        }
-
-        function observeState() {
-          var observerAsObserver = observer;
-
-          if (observerAsObserver.next) {
-            observerAsObserver.next(getState());
-          }
-        }
-
-        observeState();
-        var unsubscribe = outerSubscribe(observeState);
-        return {
-          unsubscribe: unsubscribe
-        };
-      }
-    }, _ref[$$observable] = function () {
-      return this;
-    }, _ref;
-  } // When a store is created, an "INIT" action is dispatched so that every
-  // reducer returns their initial state. This effectively populates
-  // the initial state tree.
-
-
-  dispatch({
-    type: ActionTypes.INIT
-  });
-  var store = (_store = {
-    dispatch: dispatch,
-    subscribe: subscribe,
-    getState: getState,
-    replaceReducer: replaceReducer
-  }, _store[$$observable] = observable, _store);
-
-  // 上面这个表达式要分为两个部分一个部分是括号中的
-  // 括号中的这个部分是从左到右执行的，先赋值一个对象在给这个对象添加属性，然后这个括号中返回的结果是 _store
-  // 然后 将 _store 赋值给store
-  return store;
-}
-
-```
-
-- createStore 从字面上就可以看出是来创建store的对象的
-- createStore接受三个参数 reducer preloadState enhancer
-- reducer不必说了，preloadState就是state初始值，enhancer字面上叫放大器实际上他就是一个函数，下面会重点讲他
-
-
-
-
-
 
 
 ### compose
@@ -298,3 +59,61 @@ lele就相当于 function（sth）{
 ​	return a( b( c(sth) ) );
 
 }
+
+
+
+### applyMiddleware
+
+这个applyMiddleware函数的作用是什么呢？
+
+applyMiddleware 的参数会被放入一个叫做middlewares的数组中，而其函数体只是返回两层嵌套的函数。
+
+其主要目的是修饰dispatch方法，在原本的dispatch方法后面再添加一些逻辑。
+
+```JavaScript
+// 这个函数的参数是执行完dispatch之后，额外执行的函数
+function applyMiddleware() {
+  // 将参数放入middleware中
+  for (var _len = arguments.length, middlewares = new Array(_len), _key = 0; _key < _len; _key++) {
+
+    middlewares[_key] = arguments[_key];
+  }
+
+  // 返回的函数就是enhancer，所以接受createStore作为参数。与createStore内容相呼应
+  return function (createStore) {
+    //  下面这个函数相当于 enhancer( createStore ) 返回的那个函数,他接受reducer和preloadState
+    return function (reducer, preloadedState) {
+      var store = createStore(reducer, preloadedState);
+
+      var _dispatch = function dispatch() {
+        throw new Error('Dispatching while constructing your middleware is not allowed. ' + 'Other middleware would not be applied to this dispatch.');
+      };
+
+      // 封装一下 getState和dispatch
+      var middlewareAPI = {
+        getState: store.getState,
+        dispatch: function dispatch(action) {
+          for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+            args[_key2 - 1] = arguments[_key2];
+          }
+
+          return _dispatch.apply(void 0, [action].concat(args));
+        }
+      };
+      // chain是一个数组，是一个将middlewareAPI 传给中间件之后的返回值的数组。
+      var chain = middlewares.map(function (middleware) {
+        return middleware(middlewareAPI);
+      });
+      _dispatch = compose.apply(void 0, chain)(store.dispatch);
+
+      // _objectSpread ： 对象展开符，合并对象，相当于Object.assign。
+
+      //  所以结果enhancer处理的createStore和没有enhancer的区别就是返回的store中的dispatch不一样
+      // 有enhancer处理过得store的dispatch方法，会在执行完基本的dispatch之后在额外执行 applyMiddleware传入的中间件函数
+      return _objectSpread(_objectSpread({}, store), {}, {dispatch: _dispatch});
+    };
+  };
+}
+
+```
+

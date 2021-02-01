@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>打印插件</title>
+    <script src="./LodopFuncs.js"></script>
+<!--    <object  id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>-->
+<!--        <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>-->
+<!--    </object>-->
+</head>
+<body>
+
+<p>
+LODOP
+    <a href="http://www.lodop.net/LodopDemo.html">官网地址</a>
+</p>
+<a href="javascript: CheckIsInstall()">小试牛刀</a>
+<a href="http://www.c-lodop.com/demolist/CLodop_Setup_for_Win32NT.zip">下载控件</a>
+
+<script>
+    // var LODOP=getLodop();
+
+    function CheckIsInstall() {
+        try{
+            var LODOP=getLodop();
+            // if (LODOP.VERSION) {
+            //     if (LODOP.CVERSION)
+            //         alert("当前有WEB打印服务C-Lodop可用!\n C-Lodop版本:"+LODOP.CVERSION+"(内含Lodop"+LODOP.VERSION+")");
+            //     else
+            //         alert("本机已成功安装了Lodop控件！\n 版本号:"+LODOP.VERSION);
+            //
+            // };
+            LODOP.PRINT_INIT('打印控件功能演示')
+            LODOP.SET_PRINT_STYLE("FontSize",18);
+            LODOP.SET_PRINT_STYLE("Bold",1);
+            LODOP.ADD_PRINT_TEXT(50,231,260,39,"打印页面部分内容")
+            LODOP.PREVIEW();
+        }catch(err){
+        }
+    };
+    // CheckIsInstall()
+</script>
+</body>
+</html>

@@ -8,9 +8,13 @@ less
 
 拉钩小册等
 
+猛攻react 
 
+https://react.jokcy.me/
 
+https://kaiwu.lagou.com/course/courseInfo.htm?courseId=510#/detail/pc?id=4849
 
+https://react.docschina.org/docs/getting-started.html
 
 近半年优先级：
 
@@ -20,7 +24,7 @@ webpack相关（loader plugin）
 
 nodeJS相关
 
-数据结构与算法
+数据结构与算法 （在学习diff算法时遇到，确实是一个重要的概念，在编程中数据结构和算法确实非常重要）
 
 
 
@@ -148,6 +152,10 @@ nodeJS相关
 
 
 react 富文本编辑器 braft-editor
+
+
+
+国际化
 
 
 
