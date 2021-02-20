@@ -1,4 +1,72 @@
+### 深入React-Hooks工作机制：原则背后是原理
 
+React-Hooks的使用原则：
+
+1. 只在React函数组件中使用Hook；
+2. 不在循环、条件、或者嵌套函数中使用Hook；
+
+why？
+
+以useState为例，从react-hooks的调用链路说起
+
+![](E:\NodeJS-Study\笔记\React\useState的调用链路.png)
+
+```JavaScript
+// 进入 mounState 逻辑
+function mountState(initialState) {
+
+  // 将新的 hook 对象追加进链表尾部
+  var hook = mountWorkInProgressHook();
+
+  // initialState 可以是一个回调，若是回调，则取回调执行后的值
+  if (typeof initialState === 'function') {
+    // $FlowFixMe: Flow doesn't like mixed types
+    initialState = initialState();
+  }
+
+  // 创建当前 hook 对象的更新队列，这一步主要是为了能够依序保留 dispatch
+  const queue = hook.queue = {
+    last: null,
+    dispatch: null,
+    lastRenderedReducer: basicStateReducer,
+    lastRenderedState: (initialState: any),
+  };
+
+  // 将 initialState 作为一个“记忆值”存下来
+  hook.memoizedState = hook.baseState = initialState;
+
+  // dispatch 是由上下文中一个叫 dispatchAction 的方法创建的，这里不必纠结这个方法具体做了什么
+  var dispatch = queue.dispatch = dispatchAction.bind(null, currentlyRenderingFiber$1, queue);
+  // 返回目标数组，dispatch 其实就是示例中常常见到的 setXXX 这个函数，想不到吧？哈哈
+  return [hook.memoizedState, dispatch];
+}
+```
+
+mountState的主要工作是初始化Hooks，在mountState中，最需要关注的是mountWorkInProgressHook方法
+
+```JavaScript
+function mountWorkInProgressHook() {
+  // 注意，单个 hook 是以对象的形式存在的
+  var hook = {
+    memoizedState: null,
+    baseState: null,
+    baseQueue: null,
+    queue: null,
+    next: null
+  };
+  if (workInProgressHook === null) {
+    // 这行代码每个 React 版本不太一样，但做的都是同一件事：将 hook 作为链表的头节点处理
+    firstWorkInProgressHook = workInProgressHook = hook;
+  } else {
+    // 若链表不为空，则将 hook 追加到链表尾部
+    workInProgressHook = workInProgressHook.next = hook;
+  }
+  // 返回当前的 hook
+  return workInProgressHook;
+}
+```
+
+从上面的代码可以看出 hook的信息都存放在一个hook对象中，而hook对象之间以单向链表的形式相互串联。
 
 
 

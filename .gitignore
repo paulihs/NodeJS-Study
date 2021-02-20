@@ -4,6 +4,6 @@
 /笔记/ES6-koa-router
 /node_modules
 /myKoa
-/supreme-project/node_modules
-/supreme-project/dist
-/supreme-project
+/supreme-project(webpack demo)/node_modules
+/supreme-project(webpack demo)/dist
+/supreme-project(webpack demo)

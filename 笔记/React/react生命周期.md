@@ -93,6 +93,7 @@ static getDerivedStateFromProps(props, state){
     
     // 方法接受两个参数： props 和 state。 他们代表当前组件接受到来自父组件的props，和当前组件自身的state。
     // 该方法必须要一个返回值 当不存在使用props派生state时，可以返回null。
+    // 返回的对象和state的合并规则和setState一样
 }
 ```
 
@@ -100,29 +101,43 @@ static getDerivedStateFromProps(props, state){
 
 #### 更新阶段：组件的更新
 
+React15与React16.3的更新流程对比：
+
+![](E:\NodeJS-Study\笔记\React\更新阶段的对比.png)
 
 
 
+react16.4对生命周期流程进行了微调，调整的地方就在getDerivedStateFromProps这个地方。在React16.4的生命周期中，由setState和forceUpdate导致的更新也会触发getDerivedStateFromProps；
+
+![](E:\NodeJS-Study\笔记\React\react16.4的生命周期.png)
+
+#### 消失的componentWillUpdate与新增的getSnapshotBeforeUpdate
 
 
 
+componentWillUpdate的执行时机是在render之前，而getSnapshotBeforeUpdate的执行时机是render之后，DOM更新之前。
+
+```JavaScript
+// 组件更新时调用
+getSnapshotBeforeUpdate(prevProps, prevState) {
+  console.log("getSnapshotBeforeUpdate方法执行");
+  return "haha";
+}
+
+// 组件更新后调用
+componentDidUpdate(prevProps, prevState, valueFromSnapshot) {
+  console.log("componentDidUpdate方法执行");
+  console.log("从 getSnapshotBeforeUpdate 获取到的值是", valueFromSnapshot);
+}
+```
 
 
 
+getSnapshotBeforeUpdate的返回值会作为第三个参数传递给componentDidUpdate。
 
+### 组件的卸载
 
-
-
-
-
-
-
-
-
-
-
-
-
+React 16组件的卸载和React15是一样的，此处不再重复。
 
 react生命周期图：
 
