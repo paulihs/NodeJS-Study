@@ -1,5 +1,3 @@
-### createStore
-
 
 
 ### compose
