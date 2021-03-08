@@ -71,3 +71,13 @@ Redux主要由三个部分组成：Store、Reducer和Action。
 在Redux的工作过程中，**数据流是严格单向的**。如果你想对数据进行修改，只有一个途径，发起一个Action。Action会被Reducer接收，Reducer会根据Action内容的不同执行不同的计算逻辑最终生成新的state（状态）
 
 这个新的state会更新到Store对象中（其实是一个闭包），进而驱动视图层面的更新（利用Context）
+
+
+
+> 总结：Redux是一个JavaScript的状态容器，它提供可预测的状态管理。
+
+Redux最重要的特点就是单向数据流，这个是**’可预测的状态管理的重要保障’**。
+
+他的数据流向只能是从 
+
+**Store —> View —> Action —> Reducer —> 修改state，更新Store —> 触发View的更新**

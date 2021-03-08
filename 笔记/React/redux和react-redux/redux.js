@@ -506,16 +506,18 @@ function compose() {
 
 
 // 这个函数的参数是执行完dispatch之后，额外执行的函数
+// applyMiddleware的参数就是中间件
 function applyMiddleware() {
   // 将参数放入middleware中
   for (var _len = arguments.length, middlewares = new Array(_len), _key = 0; _key < _len; _key++) {
-
+    // 把参数放进这个数组中
     middlewares[_key] = arguments[_key];
   }
 
   // 返回的函数就是enhancer，所以接受createStore作为参数。与createStore内容相呼应
   return function (createStore) {
     //  下面这个函数相当于 enhancer( createStore ) 返回的那个函数,他接受reducer和preloadState
+    // 相当于 增强版的createStore
     return function (reducer, preloadedState) {
       var store = createStore(reducer, preloadedState);
 

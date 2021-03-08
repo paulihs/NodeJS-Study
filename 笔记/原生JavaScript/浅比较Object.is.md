@@ -6,7 +6,7 @@ PureComponent中 shouldComponentUpdate源码
 
 ```javascript
 if (this._compositeType === CompositeTypes.PureClass) {
-  shouldUpdate = !shallowEqual(prevProps, nextProps) || ! shallowEqual(inst.state, nextState);
+  shouldUpdate = !shallowEqual(prevProps, nextProps) || ! shallowEqual(this.state, nextState);
 }
 ```
 
