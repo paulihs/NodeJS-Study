@@ -1,3 +1,15 @@
+JSX是什么？有什么用？
+
+JSX是JavaScript的语法拓展。
+
+通过babel，JSX会被编译为React.createElement()，React.createElement()会返回被称为‘React Element’的JS对象，JSX就是通过这种方式在JS中生效的。
+
+通过createElement创建的React元素是**以JavaScript对象形式存在的 对DOM的描述**，就是我们常说的“虚拟DOM”。
+
+而虚拟DOM变成页面上的真实DOM的这个工作是由 **ReactDOM.render**来完成的。
+
+
+
 # JSX是如何变成DOM的？
 
 在使用react的时候，我们经常会使用的JSX语法。
