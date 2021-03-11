@@ -55,7 +55,7 @@ nodeJS相关
 |                                   |      |                                                              |
 | 算法和数据结构                    |      | 在B站有视频可以看看，还有电子书、github上前端内参也有相关的介绍 |
 | 什么是hybrid开发                  |      |                                                              |
-| JS bridge 的实现方式              |      |                                                              |
+| JS bridge 的实现方式              | 完成 |                                                              |
 | node.js      express       Koa    |      |                                                              |
 |                                   |      |                                                              |
 |                                   | 完成 |                                                              |

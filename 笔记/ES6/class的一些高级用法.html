@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>extends的作用</title>
+</head>
+<body>
+
+</body>
+<script>
+    function Component(props, context, updater) {
+        this.props = props;
+        this.context = context;
+        // If a component has string refs, we will assign a different object later.
+        this.refs = {ref: '我是ref'};
+        // We initialize the default updater but the real one gets injected by the
+        // renderer.
+        this.updater = updater ;
+    }
+
+    Component.prototype.isReactComponent = {};
+    function david(props) {
+
+    }
+    class hello extends Component{
+        // constructor(props){
+        //     // super();// 相当于 调用父类的constructor ，  相当于Component.call(this, props)
+        //     // 就是这个实例先要经过Component处理，然后再
+        // }
+    }
+    // function hello(){}
+    // hello.prototype = new Component()
+    const a = new hello('a1');
+    const b = new hello('b1');
+    console.log('a是：',a)
+</script>
+</html>
