@@ -222,6 +222,8 @@ function FiberNode(
   key: null | string,
   mode: TypeOfMode,
 ) {
+
+  // Fiber节点
   // Instance
   this.tag = tag;
   this.key = key;
@@ -425,6 +427,7 @@ export function createWorkInProgress(
 }
 
 export function createHostRootFiber(isConcurrent: boolean): Fiber {
+  // isConcurrent 默认是false
   let mode = isConcurrent ? ConcurrentMode | StrictMode : NoContext;
 
   if (enableProfilerTimer && isDevToolsPresent) {

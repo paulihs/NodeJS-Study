@@ -370,6 +370,9 @@ function ReactRoot(
   const root = createContainer(container, isConcurrent, hydrate);
   this._internalRoot = root;
 }
+
+// 真正的 RENDER 在这里
+
 ReactRoot.prototype.render = function(
   children: ReactNodeList,
   callback: ?() => mixed,
@@ -498,12 +501,17 @@ function legacyCreateRootFromDOMContainer(
   container: DOMContainer,
   forceHydrate: boolean,
 ): Root {
+  // 默认是false
   const shouldHydrate =
     forceHydrate || shouldHydrateDueToLegacyHeuristic(container);
+
   // First clear any existing content.
   if (!shouldHydrate) {
     let warned = false;
     let rootSibling;
+    // rootSibling默认是undefined
+    // 如果container.lastChild存在（被选节点的最后一个子节点），就把这个子节点删除
+    // 就是说 根节点如果不是空的标签，就把他的子节点删除
     while ((rootSibling = container.lastChild)) {
       if (__DEV__) {
         if (
@@ -536,6 +544,7 @@ function legacyCreateRootFromDOMContainer(
   }
   // Legacy roots are not async by default.
   const isConcurrent = false;
+  // 初始化 时 入参  dom，false， false
   return new ReactRoot(container, isConcurrent, shouldHydrate);
 }
 
@@ -549,6 +558,10 @@ function legacyRenderSubtreeIntoContainer(
   if (__DEV__) {
     topLevelUpdateWarnings(container);
   }
+
+  // 初始化的时候forceHydrate 是false
+  // parentComponent 是null
+
 
   // TODO: Without `any` type, Flow says "Property cannot be accessed on any
   // member of intersection type." Whyyyyyy.
@@ -570,6 +583,7 @@ function legacyRenderSubtreeIntoContainer(
       };
     }
     // Initial mount should not be batched.
+    // 初始化的时候不要批量更新
     unbatchedUpdates(() => {
       if (parentComponent != null) {
         root.legacy_renderSubtreeIntoContainer(
@@ -578,6 +592,7 @@ function legacyRenderSubtreeIntoContainer(
           callback,
         );
       } else {
+        // children就是App这个根组件，callback就是回调函数。
         root.render(children, callback);
       }
     });
