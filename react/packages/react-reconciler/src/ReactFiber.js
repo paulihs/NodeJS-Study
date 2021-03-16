@@ -426,6 +426,7 @@ export function createWorkInProgress(
   return workInProgress;
 }
 
+// 创建
 export function createHostRootFiber(isConcurrent: boolean): Fiber {
   // isConcurrent 默认是false
   let mode = isConcurrent ? ConcurrentMode | StrictMode : NoContext;

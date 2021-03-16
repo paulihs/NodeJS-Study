@@ -1221,11 +1221,6 @@ function workLoop(isYieldy) {
 }
 
 function renderRoot(root: FiberRoot, isYieldy: boolean): void {
-  invariant(
-    !isWorking,
-    'renderRoot was called recursively. This error is likely caused ' +
-      'by a bug in React. Please file an issue.',
-  );
 
   flushPassiveEffects();
 
@@ -1744,12 +1739,6 @@ function retryTimedOutBoundary(boundaryFiber: Fiber, thenable: Thenable) {
 function scheduleWorkToRoot(fiber: Fiber, expirationTime): FiberRoot | null {
   recordScheduleUpdate();
 
-  if (__DEV__) {
-    if (fiber.tag === ClassComponent) {
-      const instance = fiber.stateNode;
-      warnAboutInvalidUpdates(instance);
-    }
-  }
 
   // Update the source fiber's expiration time
   if (fiber.expirationTime < expirationTime) {
@@ -1762,6 +1751,7 @@ function scheduleWorkToRoot(fiber: Fiber, expirationTime): FiberRoot | null {
   // Walk the parent path to the root and update the child expiration time.
   let node = fiber.return;
   let root = null;
+  //  初始化的时候 ，是根节点
   if (node === null && fiber.tag === HostRoot) {
     root = fiber.stateNode;
   } else {
@@ -1824,6 +1814,7 @@ function scheduleWorkToRoot(fiber: Fiber, expirationTime): FiberRoot | null {
       }
     }
   }
+
   return root;
 }
 
@@ -1851,19 +1842,6 @@ export function warnIfNotCurrentlyBatchingInDev(fiber: Fiber): void {
 function scheduleWork(fiber: Fiber, expirationTime: ExpirationTime) {
   const root = scheduleWorkToRoot(fiber, expirationTime);
   if (root === null) {
-    if (__DEV__) {
-      switch (fiber.tag) {
-        case ClassComponent:
-          warnAboutUpdateOnUnmounted(fiber, true);
-          break;
-        case FunctionComponent:
-        case ForwardRef:
-        case MemoComponent:
-        case SimpleMemoComponent:
-          warnAboutUpdateOnUnmounted(fiber, false);
-          break;
-      }
-    }
     return;
   }
 

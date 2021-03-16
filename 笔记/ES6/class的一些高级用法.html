@@ -23,10 +23,10 @@
 
     }
     class hello extends Component{
-        // constructor(props){
-        //     // super();// 相当于 调用父类的constructor ，  相当于Component.call(this, props)
-        //     // 就是这个实例先要经过Component处理，然后再
-        // }
+        constructor(props){
+            super(props);// 相当于 调用父类的constructor ，  相当于Component.call(this, props)
+            // 就是这个实例先要经过Component处理，然后再
+        }
     }
     // function hello(){}
     // hello.prototype = new Component()

@@ -273,23 +273,7 @@ export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {
     }
   }
 
-  if (__DEV__) {
-    if (
-      fiber.tag === ClassComponent &&
-      (currentlyProcessingQueue === queue1 ||
-        (queue2 !== null && currentlyProcessingQueue === queue2)) &&
-      !didWarnUpdateInsideUpdate
-    ) {
-      warningWithoutStack(
-        false,
-        'An update (setState, replaceState, or forceUpdate) was scheduled ' +
-          'from inside an update function. Update functions should be pure, ' +
-          'with zero side-effects. Consider using componentDidUpdate or a ' +
-          'callback.',
-      );
-      didWarnUpdateInsideUpdate = true;
-    }
-  }
+
 }
 
 export function enqueueCapturedUpdate<State>(

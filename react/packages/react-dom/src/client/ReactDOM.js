@@ -372,7 +372,6 @@ function ReactRoot(
 }
 
 // 真正的 RENDER 在这里
-
 ReactRoot.prototype.render = function(
   children: ReactNodeList,
   callback: ?() => mixed,
@@ -391,6 +390,7 @@ ReactRoot.prototype.render = function(
   updateContainer(children, root, null, work._onCommit);
   return work;
 };
+
 ReactRoot.prototype.unmount = function(callback: ?() => mixed): Work {
   const root = this._internalRoot;
   const work = new ReactWork();
@@ -555,9 +555,6 @@ function legacyRenderSubtreeIntoContainer(
   forceHydrate: boolean,
   callback: ?Function,
 ) {
-  if (__DEV__) {
-    topLevelUpdateWarnings(container);
-  }
 
   // 初始化的时候forceHydrate 是false
   // parentComponent 是null
@@ -566,7 +563,10 @@ function legacyRenderSubtreeIntoContainer(
   // TODO: Without `any` type, Flow says "Property cannot be accessed on any
   // member of intersection type." Whyyyyyy.
   // 先判断DOM中有没有这个属性
+
   let root: Root = (container._reactRootContainer: any);
+
+  // initial mount
   if (!root) {
     // 没有这个属性就是初次渲染
     // Initial mount

@@ -118,29 +118,26 @@ function scheduleRootUpdate(
   expirationTime: ExpirationTime,
   callback: ?Function,
 ) {
-  if (__DEV__) {
-    if (
-      ReactCurrentFiberPhase === 'render' &&
-      ReactCurrentFiberCurrent !== null &&
-      !didWarnAboutNestedUpdates
-    ) {
-      didWarnAboutNestedUpdates = true;
-      warningWithoutStack(
-        false,
-        'Render methods should be a pure function of props and state; ' +
-          'triggering nested component updates from render is not allowed. ' +
-          'If necessary, trigger nested updates in componentDidUpdate.\n\n' +
-          'Check the render method of %s.',
-        getComponentName(ReactCurrentFiberCurrent.type) || 'Unknown',
-      );
-    }
-  }
 
+  // 一个对象
+  /*
+  * {
+    expirationTime: expirationTime,
+
+    tag: UpdateState,
+    payload: null,
+    callback: null,
+
+    next: null,
+    nextEffect: null,
+  };
+  * */
   const update = createUpdate(expirationTime);
   // Caution: React DevTools currently depends on this property
   // being called "element".
   update.payload = {element};
 
+  // 使用参数填充update对象
   callback = callback === undefined ? null : callback;
   if (callback !== null) {
     warningWithoutStack(
@@ -168,18 +165,6 @@ export function updateContainerAtExpirationTime(
 ) {
   // TODO: If this is a nested container, this won't be the root.
   const current = container.current;
-
-  if (__DEV__) {
-    if (ReactFiberInstrumentation.debugTool) {
-      if (current.alternate === null) {
-        ReactFiberInstrumentation.debugTool.onMountContainer(container);
-      } else if (element === null) {
-        ReactFiberInstrumentation.debugTool.onUnmountContainer(container);
-      } else {
-        ReactFiberInstrumentation.debugTool.onUpdateContainer(container);
-      }
-    }
-  }
 
   const context = getContextForSubtree(parentComponent);
   if (container.context === null) {
@@ -272,6 +257,7 @@ function findHostInstanceWithWarning(
   return findHostInstance(component);
 }
 
+// 根据 根容器(DOM节点) 创建  Fiber节点
 export function createContainer(
   containerInfo: Container,
   isConcurrent: boolean,
@@ -279,7 +265,7 @@ export function createContainer(
 ): OpaqueRoot {
   return createFiberRoot(containerInfo, isConcurrent, hydrate);
 }
-
+// 更新根节点
 export function updateContainer(
   element: ReactNodeList,
   container: OpaqueRoot,
