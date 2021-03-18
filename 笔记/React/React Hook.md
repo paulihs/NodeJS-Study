@@ -119,7 +119,13 @@ props 会在 ProfilePage 函数执行的一瞬间就被捕获，而 props 本身
 1. 只在React函数组件中使用Hook；
 2. 不在循环、条件、或者嵌套函数中使用Hook；
 
+第一条原则不用多说，react-hooks就是用于增强react函数组件能力的，在普通函数中使用没有意义。
+
+第二条原则就需要好好说道说道了，这个原则的目的其实就是**要保证Hooks在每次渲染时都保持同样的执行顺序**。
+
 why？
+
+#### 从源码调用流程看原理：Hooks的正常运作，在底层依赖于顺序链表
 
 以useState为例，从react-hooks的调用链路说起
 
@@ -158,6 +164,10 @@ function mountState(initialState) {
 
 mountState的主要工作是初始化Hooks，在mountState中，最需要关注的是mountWorkInProgressHook方法
 
+
+
+
+
 ```JavaScript
 function mountWorkInProgressHook() {
   // 注意，单个 hook 是以对象的形式存在的
@@ -180,9 +190,15 @@ function mountWorkInProgressHook() {
 }
 ```
 
-从上面的代码可以看出 hook的信息都存放在一个hook对象中，而hook对象之间以单向链表的形式相互串联。
+从上面的代码可以看出 **hook的信息都存放在一个hook对象中，而hook对象之间以单向链表的形式相互串联**。
 
+接下来看更新的过程：
 
+![useState更新过程](E:\NodeJS-Study\笔记\React\useState更新过程.png)
+
+首次渲染和更新渲染的区别在于调用的是mountState还是updateState，updateState之后的链路涉及的代码很多，但其做的事情很容易理解，按顺序遍历之前构建好的链表，取出对应的数据进行渲染。
+
+hooks的本质其实就是链表。
 
 
 

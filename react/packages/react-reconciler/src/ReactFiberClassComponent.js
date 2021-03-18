@@ -188,9 +188,7 @@ const classComponentUpdater = {
     const update = createUpdate(expirationTime);
     update.payload = payload;
     if (callback !== undefined && callback !== null) {
-      if (__DEV__) {
-        warnOnInvalidCallback(callback, 'setState');
-      }
+
       update.callback = callback;
     }
 
