@@ -5,10 +5,15 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
     // 入口文件
     entry: './src/index.js',
-    // bundle文件的地址、名称等信息
+    // bundle文件的地址、文件名等信息
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'geijin.bundle.js',
+        // filename: 'geijin.bundle.js',
+        filename: '[name].bundle.[chunkhash:8].js',
+        chunkFilename: 'chunk.[name].[chunkhash:8].js',
+        // publicPath 表示bundle以及bundle中资源的真实路径
+        // publicPath: 'https://cdn.example.com/assets/[hash]/',
+    //    如果咋编译时不知道最终输出的文件中publicPath是什么地址，可以将其留空，然后在运行时通过入口文件中的 __webpack_public_path__ 来设置
     },
     module: {
         rules: [
@@ -29,7 +34,12 @@ module.exports = {
                 test: /\.css$/,
                 use: [
                     'style-loader',
-                    'css-loader'
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true,
+                        },
+                    }
                 ],
             },
             // 这个file-loader让我们可以在模块中使用import引入图片 ` import myImage from './my-image.png'`
@@ -37,7 +47,7 @@ module.exports = {
             //  当我们使用css-loader的时候，在css中使用这样的写法 url('./my-image.png') ,my-image图片会以与上面类似的方式被处理
             // 同样的事情也发生在使用html-loader 处理 <img src='./my-image.png'/> 的时候
             {
-                test: /\.(png|svg|jpg|gif)$/,
+                test: /\.(png|svg|jpe?g|gif)$/,
                 use: [
                     'file-loader',
                     // 'url-loader',
@@ -53,13 +63,19 @@ module.exports = {
             }
         ]
     },
+    resolve: {
+        alias: {
+            utils: path.resolve(__dirname, 'src/utils/'),
+            '@': path.resolve(__dirname, './src/'),
+        },
+    },
     plugins: [
         //  清空 输出文件夹（本项目为dist）
         new CleanWebpackPlugin(),
         // todo 学习 HTMLWebpackPlugin 的使用
         new htmlWebpackPlugin({
+            template: "./src/index.html",
             title: '123',
-            template: "./src/index.html"
         })
     ],
     //  默认值就是 production

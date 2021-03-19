@@ -16,7 +16,7 @@ module.exports = {
         //     dependOn: 'shared',
         // },
         // another: {
-        //     import: './src/bye.js',
+        //     import: './src/app.js',
         //     dependOn: 'shared',
         // },
         // shared: 'lodash',
@@ -59,7 +59,7 @@ module.exports = {
         new CleanWebpackPlugin(),
         // todo 学习 HTMLWebpackPlugin 的使用
         new htmlWebpackPlugin({
-            title: '给劲的瑶',
+            title: 'my',
             template: "./src/index.html"
         })
     ],

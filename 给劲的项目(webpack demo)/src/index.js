@@ -1,32 +1,22 @@
-// import _ from 'lodash';
-// import './style.css';
-// import img from './jessie.jpg';
-// // import bye from "./bye.js";
-// function component() {
-//     // bye();
-//     const ele = document.createElement('div');
-//     ele.innerText = _.join(['hello', 'webpack'], ' ');
-//     const myIcon = new Image();
-//     myIcon.src = img;
+import React from 'react';
+import ReactDOM from 'react-dom'
 //
-//     ele.appendChild(myIcon);
-//     return ele;
+// function GetComponent() {
+//
+//     return import(/* webpackChunkName: "app" */ './app.js').then(({ default: _ }) => {
+//         const element = document.createElement('div');
+//
+//         element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+//
+//         return element;
+//
+//     }).catch(error => 'An error occurred while loading the component');
 // }
-// document.body.appendChild(component());
-
-    function getComponent() {
-
-        return import(/* webpackChunkName: "lodash" */ 'lodash').then(({ default: _ }) => {
-            const element = document.createElement('div');
-
-            element.innerHTML = _.join(['Hello', 'webpack'], ' ');
-
-            return element;
-
-        }).catch(error => 'An error occurred while loading the component');
-    }
+import(/* webpackChunkName: "app" */ './app.js').then(({default: _}) => {
+    const App = React.createElement(_);
+    ReactDOM.render(App, document.getElementById('react-root'));
+}).catch(error => {
+    console.log('An error occurred while loading the component')
+});
 
 
-    getComponent().then(component => {
-        document.body.appendChild(component);
-    })
