@@ -1,8 +1,12 @@
 const path = require('path');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
 module.exports = {
+    //  默认值就是 production
+    // mode: 'production'
+    mode: 'development',
     // 入口文件
     entry: './src/index.js',
     // bundle文件的地址、文件名等信息
@@ -11,10 +15,22 @@ module.exports = {
         // filename: 'geijin.bundle.js',
         filename: '[name].bundle.[chunkhash:8].js',
         chunkFilename: 'chunk.[name].[chunkhash:8].js',
-        // publicPath 表示bundle以及bundle中资源的真实路径
-        // publicPath: 'https://cdn.example.com/assets/[hash]/',
+        clean: true,
+        // publicPath 表示bundle以及bundle中资源的真实路径的前缀
+        publicPath: './',
     //    如果咋编译时不知道最终输出的文件中publicPath是什么地址，可以将其留空，然后在运行时通过入口文件中的 __webpack_public_path__ 来设置
     },
+    plugins: [
+        //  清空 输出文件夹（本项目为dist）
+        // new CleanWebpackPlugin(),
+        new WebpackManifestPlugin (),
+        // todo 学习 HTMLWebpackPlugin 的使用
+        new htmlWebpackPlugin({
+            template: "./src/index.html",
+            title: '123',
+        })
+    ],
+
     module: {
         rules: [
             {
@@ -69,16 +85,5 @@ module.exports = {
             '@': path.resolve(__dirname, './src/'),
         },
     },
-    plugins: [
-        //  清空 输出文件夹（本项目为dist）
-        new CleanWebpackPlugin(),
-        // todo 学习 HTMLWebpackPlugin 的使用
-        new htmlWebpackPlugin({
-            template: "./src/index.html",
-            title: '123',
-        })
-    ],
-    //  默认值就是 production
-    // mode: 'production'
-    mode: 'development'
+
 };
