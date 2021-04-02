@@ -20,7 +20,7 @@ https://react.docschina.org/docs/getting-started.html
 
 HTTP相关
 
-webpack相关（loader plugin）
+webpack相关（loader plugin）和 roll up等打包工具的对比
 
 性能优化
 
@@ -30,9 +30,13 @@ typescript
 
 性能优化： ssr 、预渲染、 首屏优化crp、
 
+预获取 预加载 
+
+service worker （pwa）
+
 数据结构与算法 （在学习diff算法时遇到，确实是一个重要的概念，在编程中数据结构和算法确实非常重要）
 
-
+ESlint 
 
 | canvas和svg在数据可视化方面的应用 |      |                                                              |
 | :-------------------------------- | ---- | ------------------------------------------------------------ |

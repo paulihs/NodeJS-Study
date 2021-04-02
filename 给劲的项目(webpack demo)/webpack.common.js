@@ -1,34 +1,67 @@
 const path = require('path');
 const htmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const {WebpackManifestPlugin } = require('webpack-manifest-plugin');
+const {WebpackManifestPlugin} = require('webpack-manifest-plugin');
+const MinCssExtractPlugin = require('mini-css-extract-plugin');
+
+// const WorkboxPlugin = require('workbox-webpack-plugin');
+
+// import { Configuration } from 'webpack'
+
+/**
+ *
+ * @type {Configuration}
+ */
+const env = process.env.NODE_ENV === 'production';
 
 module.exports = {
+    // cache: true,
     //  默认值就是 production
     // mode: 'production'
-    mode: 'development',
+    // mode: 'development',
+
     // 入口文件
     entry: './src/index.js',
+
     // bundle文件的地址、文件名等信息
     output: {
         path: path.resolve(__dirname, 'dist'),
-        // filename: 'geijin.bundle.js',
         filename: '[name].bundle.[chunkhash:8].js',
         chunkFilename: 'chunk.[name].[chunkhash:8].js',
         clean: true,
         // publicPath 表示bundle以及bundle中资源的真实路径的前缀
         publicPath: './',
-    //    如果咋编译时不知道最终输出的文件中publicPath是什么地址，可以将其留空，然后在运行时通过入口文件中的 __webpack_public_path__ 来设置
+        environment: {
+            arrowFunction: false,
+        },
+        pathinfo: false,
+        //    如果咋编译时不知道最终输出的文件中publicPath是什么地址，可以将其留空，然后在运行时通过入口文件中的 __webpack_public_path__ 来设置
+    },
+    devtool: 'inline-source-map',
+
+    optimization: {
+        moduleIds: 'deterministic',
+        runtimeChunk: 'single',
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    // chunks: 'all',
+                    chunks: 'initial',
+                },
+            },
+        },
     },
     plugins: [
         //  清空 输出文件夹（本项目为dist）
         // new CleanWebpackPlugin(),
-        new WebpackManifestPlugin (),
+        // new WebpackManifestPlugin (),
         // todo 学习 HTMLWebpackPlugin 的使用
-        new htmlWebpackPlugin({
-            template: "./src/index.html",
-            title: '123',
-        })
+        // new htmlWebpackPlugin({
+        //     template: "./src/index.html",
+        //     title: '123',
+        // }),
+
     ],
 
     module: {
@@ -36,10 +69,12 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
+                include: path.resolve(__dirname, 'src'),
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env','@babel/preset-react']
+                        presets: ['@babel/preset-env', '@babel/preset-react'],
+                        cacheDirectory: true,
                     },
                 },
             },
@@ -49,7 +84,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    'style-loader',
+                    env ? MinCssExtractPlugin.loader : 'style-loader',
                     {
                         loader: 'css-loader',
                         options: {
@@ -64,11 +99,22 @@ module.exports = {
             // 同样的事情也发生在使用html-loader 处理 <img src='./my-image.png'/> 的时候
             {
                 test: /\.(png|svg|jpe?g|gif)$/,
+                // type: "asset/resource",
+
                 use: [
                     'file-loader',
                     // 'url-loader',
                 ],
             },
+            // {
+            //     test: /\.(jpeg)$/,
+            //     type: "asset/resource",
+            //
+            //     // use: [
+            //     //     'file-loader',
+            //     //     // 'url-loader',
+            //     // ],
+            // },
             // 字体文件
             //  file-loader和url-loader 会处理任意文件，并把它们输出到output目录
             {
@@ -76,6 +122,10 @@ module.exports = {
                 use: [
                     'file-loader',
                 ],
+            },
+            {
+                test: /\.html$/i,
+                use: ['html-loader'],
             }
         ]
     },
@@ -84,6 +134,8 @@ module.exports = {
             utils: path.resolve(__dirname, 'src/utils/'),
             '@': path.resolve(__dirname, './src/'),
         },
+        symlinks: false,
+
     },
 
 };

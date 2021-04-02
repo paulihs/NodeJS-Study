@@ -1,0 +1,5 @@
+macd
+
+boll
+
+kdj
