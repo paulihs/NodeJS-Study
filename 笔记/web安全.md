@@ -82,8 +82,9 @@ CSRF(Cross-site request forgery跨站请求伪造，也被称成为“one click 
 
 ### 防御措施
 1. 服务端检查Referer字段，验证请求来源站点。
-2. 请求添加校验token
+2. 请求头中添加校验token
 3. 针对实际情况，设置关键 Cookie 的 `SameSite` 属性为 `Strict` 或 `Lax`
+4. 添加验证码，用于区分是用户还是机器。
 
 
 ### 参考文章

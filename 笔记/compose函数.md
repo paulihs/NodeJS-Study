@@ -27,3 +27,4 @@ function compose() {
 ```
 
 compose是用来处理函数的
+
